@@ -1,20 +1,19 @@
 import React, { useState } from 'react';
 
 const EditProductPage = () => {
-    // 1. State variable to hold product data (non-visible fields remain here for logic)
     const [productData, setProductData] = useState({
-        name: "",
-        description: "",
-        price: 0,
-        countInStock: 0,
-        sku: "",
-        category: "", 
-        brand: "",    
-        sizes: [],
-        colors: [],
-        collections: "",
-        material: "",
-        gender: "",
+        name: "Premium Leather Jacket",
+        description: "A high-quality, sustainably sourced leather jacket with a modern silhouette.",
+        price: 299,
+        countInStock: 15,
+        sku: "JKT-LTR-001",
+        category: "Outerwear", 
+        brand: "Rabbit",    
+        sizes: ["S", "M", "L", "XL"],
+        colors: ["Black", "Brown"],
+        collections: "Winter 2026",
+        material: "Leather",
+        gender: "Men",
         images: [
             { url: "https://picsum.photos/150?random=1" },
             { url: "https://picsum.photos/150?random=2" }
@@ -36,98 +35,115 @@ const EditProductPage = () => {
     };
 
     return (
-        <div className='max-w-5xl mx-auto p-6 md:p-10 tracking-tighter'>
-            <h2 className='text-3xl font-bold mb-8 text-gray-900'>Edit Product</h2>
+        <div className='max-w-5xl mx-auto p-6 md:p-10'>
+            <h2 className='text-2xl md:text-3xl font-bold mb-8 uppercase tracking-tight text-gray-900'>Edit Product</h2>
             
-            <form onSubmit={handleSubmit} className='bg-white border border-gray-200 rounded-xl p-6 shadow-sm'>
-                <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-                    {/* Name */}
-                    <div className='mb-4'>
-                        <label className='block text-sm font-semibold text-gray-700 mb-1'>Product Name</label>
+            <form onSubmit={handleSubmit} className='bg-white border border-gray-100 p-8 md:p-10'>
+                <div className='grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-6'>
+                    
+                    {/* Product Name */}
+                    <div className='md:col-span-2'>
+                        <label className='block text-xs font-bold uppercase tracking-widest text-gray-900 mb-2'>Product Name</label>
                         <input 
                             type="text" 
                             name="name" 
                             value={productData.name} 
                             onChange={handleChange} 
-                            className='w-full p-2 border rounded border-gray-300 focus:ring-1 focus:ring-blue-500 outline-none' 
+                            className='w-full p-3 border border-gray-200 rounded-none focus:outline-none focus:border-black transition-colors' 
                             required 
                         />
                     </div>
 
                     {/* SKU */}
-                    <div className='mb-4'>
-                        <label className='block text-sm font-semibold text-gray-700 mb-1'>SKU</label>
+                    <div>
+                        <label className='block text-xs font-bold uppercase tracking-widest text-gray-900 mb-2'>SKU</label>
                         <input 
                             type="text" 
                             name="sku" 
                             value={productData.sku} 
                             onChange={handleChange} 
-                            className='w-full p-2 border rounded border-gray-300 focus:ring-1 focus:ring-blue-500 outline-none' 
+                            className='w-full p-3 border border-gray-200 rounded-none focus:outline-none focus:border-black transition-colors' 
                         />
                     </div>
 
-                    {/* Description (Textarea) */}
-                    <div className='md:col-span-2 mb-4'>
-                        <label className='block text-sm font-semibold text-gray-700 mb-1'>Description</label>
-                        <textarea 
-                            name="description" 
-                            rows="4"
-                            value={productData.description} 
-                            onChange={handleChange} 
-                            className='w-full p-2 border rounded border-gray-300 focus:ring-1 focus:ring-blue-500 outline-none' 
-                        />
-                    </div>
-
-                    {/* Price & Stock */}
-                    <div className='mb-4'>
-                        <label className='block text-sm font-semibold text-gray-700 mb-1'>Price ($)</label>
+                    {/* Price */}
+                    <div>
+                        <label className='block text-xs font-bold uppercase tracking-widest text-gray-900 mb-2'>Price ($)</label>
                         <input 
                             type="number" 
                             name="price" 
                             value={productData.price} 
                             onChange={handleChange} 
-                            className='w-full p-2 border rounded border-gray-300 outline-none' 
+                            className='w-full p-3 border border-gray-200 rounded-none focus:outline-none focus:border-black transition-colors' 
                         />
                     </div>
-                    <div className='mb-4'>
-                        <label className='block text-sm font-semibold text-gray-700 mb-1'>Stock</label>
+
+                    {/* Description */}
+                    <div className='md:col-span-2'>
+                        <label className='block text-xs font-bold uppercase tracking-widest text-gray-900 mb-2'>Description</label>
+                        <textarea 
+                            name="description" 
+                            rows="4"
+                            value={productData.description} 
+                            onChange={handleChange} 
+                            className='w-full p-3 border border-gray-200 rounded-none focus:outline-none focus:border-black transition-colors' 
+                        />
+                    </div>
+
+                    {/* Stock */}
+                    <div>
+                        <label className='block text-xs font-bold uppercase tracking-widest text-gray-900 mb-2'>Stock Count</label>
                         <input 
                             type="number" 
                             name="countInStock" 
                             value={productData.countInStock} 
                             onChange={handleChange} 
-                            className='w-full p-2 border rounded border-gray-300 outline-none' 
+                            className='w-full p-3 border border-gray-200 rounded-none focus:outline-none focus:border-black transition-colors' 
                         />
                     </div>
 
-                    {/* Sizes & Colors (Comma Separated Display) */}
-                    <div className='mb-4'>
-                        <label className='block text-sm font-semibold text-gray-700 mb-1'>Sizes (Comma Separated)</label>
+                    {/* Category (Placeholder for future select) */}
+                    <div>
+                        <label className='block text-xs font-bold uppercase tracking-widest text-gray-900 mb-2'>Category</label>
+                        <input 
+                            type="text" 
+                            name="category" 
+                            value={productData.category} 
+                            onChange={handleChange} 
+                            className='w-full p-3 border border-gray-200 rounded-none focus:outline-none focus:border-black transition-colors' 
+                        />
+                    </div>
+
+                    {/* Sizes */}
+                    <div>
+                        <label className='block text-xs font-bold uppercase tracking-widest text-gray-900 mb-2'>Sizes (CSV)</label>
                         <input 
                             type="text" 
                             name="sizes" 
                             value={productData.sizes.join(", ")} 
                             onChange={(e) => setProductData({...productData, sizes: e.target.value.split(",").map(s => s.trim())})} 
-                            className='w-full p-2 border rounded border-gray-300 outline-none' 
+                            className='w-full p-3 border border-gray-200 rounded-none focus:outline-none focus:border-black transition-colors' 
                         />
                     </div>
-                    <div className='mb-4'>
-                        <label className='block text-sm font-semibold text-gray-700 mb-1'>Colors (Comma Separated)</label>
+
+                    {/* Colors */}
+                    <div>
+                        <label className='block text-xs font-bold uppercase tracking-widest text-gray-900 mb-2'>Colors (CSV)</label>
                         <input 
                             type="text" 
                             name="colors" 
                             value={productData.colors.join(", ")} 
                             onChange={(e) => setProductData({...productData, colors: e.target.value.split(",").map(c => c.trim())})} 
-                            className='w-full p-2 border rounded border-gray-300 outline-none' 
+                            className='w-full p-3 border border-gray-200 rounded-none focus:outline-none focus:border-black transition-colors' 
                         />
                     </div>
                 </div>
 
                 {/* Submit Button */}
-                <div className='mt-8'>
+                <div className='mt-12'>
                     <button 
                         type="submit" 
-                        className='w-full bg-blue-600 text-white py-3 rounded-lg font-bold text-lg hover:bg-blue-700 transition-all shadow-md active:transform active:scale-95'
+                        className='w-full bg-black text-white py-4 rounded-none font-bold uppercase tracking-widest hover:bg-gray-800 transition-all duration-300'
                     >
                         Update Product
                     </button>

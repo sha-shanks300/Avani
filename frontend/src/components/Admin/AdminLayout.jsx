@@ -11,39 +11,42 @@ const AdminLayout = () => {
     };
 
     return (
-        <div className="min-h-screen flex flex-col md:flex-row bg-gray-100 tracking-tighter">
-            {/* Mobile Header: Visible ONLY on small screens */}
-            <div className="flex bg-gray-900 items-center justify-between p-4  border-b border-gray-200 md:hidden">
+        <div className="min-h-screen flex flex-col md:flex-row bg-gray-50">
+            {/* Mobile Header */}
+            <div className="flex bg-white items-center justify-between p-4 border-b border-gray-200 md:hidden">
                 <button 
                     onClick={toggleSidebar} 
-                    className="text-2xl text-gray-700 cursor-pointer"
+                    className="text-xl text-gray-900 cursor-pointer p-2 hover:bg-gray-100 transition-colors"
                 >
                     <FaBars />
                 </button>
-                <h1 className="text-xl font-bold text-white">Admin Dashboard</h1>
+                <h1 className="text-sm font-bold uppercase tracking-widest text-gray-900">
+                    Rabbit Admin
+                </h1>
             </div>
 
-            {/* Sidebar Overlay: Dims the main content on mobile */}
+            {/* Sidebar Overlay */}
             {isSidebarOpen && (
                 <div 
-                    className="fixed inset-0 bg-black opacity-50 z-20 md:hidden transition-opacity"
+                    className="fixed inset-0 bg-black/40 z-40 md:hidden transition-opacity duration-300"
                     onClick={toggleSidebar}
                 ></div>
             )}
 
-            {/* Sidebar Container: Slides on mobile, Static on desktop */}
-            <div className={`fixed inset-y-0 left-0 z-30 w-64 bg-white border-r border-gray-200 transform transition-transform duration-300 ease-in-out md:relative md:translate-x-0 ${
+            {/* Sidebar Container */}
+            <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transform transition-transform duration-300 ease-in-out md:relative md:translate-x-0 ${
                 isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
             }`}>
-                {/* Your dedicated sidebar component */}
                 <AdminSidebar />
             </div>
 
-            {/* Main Content: Opacity dims when sidebar is open on mobile */}
-            <main className={`flex-1 p-6 transition-all duration-300 ${
-                isSidebarOpen ? 'opacity-30 md:opacity-100' : 'opacity-100'
+            {/* Main Content Area */}
+            <main className={`flex-1 transition-opacity duration-300 ${
+                isSidebarOpen ? 'opacity-30 md:opacity-100 pointer-events-none md:pointer-events-auto' : 'opacity-100'
             }`}>
-                <Outlet/>
+                <div className="p-6 md:p-10 lg:p-12 max-w-7xl mx-auto">
+                    <Outlet />
+                </div>
             </main>
         </div>
     );

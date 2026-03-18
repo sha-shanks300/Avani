@@ -60,26 +60,30 @@ const placeholderProducts = [
 
 const Home = () => {
   return (
-    <div>
-      <Hero/>
-      <GenderCollectionSection/>
-      <NewArrivals/>
+    <div className="space-y-12 md:space-y-20">
+      <Hero />
+      <GenderCollectionSection />
+      <NewArrivals />
 
-      {/* best seller */}
-      <h2 className="text-3xl text-center font-bold mb-4">
-        Best Seller
-      </h2>
-      <ProductDetails/>
+      {/* Best Seller Section */}
+      <section className="bg-white">
+        <h2 className="text-3xl font-bold text-center mb-8 uppercase tracking-tight">
+          Best Seller
+        </h2>
+        {/* FIX: Passing isHome prevents recursive rendering/crashes */}
+        <ProductDetails isHome={true} />
+      </section>
 
-      <div className='container mx-auto'>
-        <h2 className='text-3xl text-center font-bold mb-4'>
+      {/* Top Wears Section */}
+      <section className='container mx-auto px-4 lg:px-8'>
+        <h2 className='text-3xl font-bold text-center mb-10 uppercase tracking-tight'>
           Top Wears for Women
         </h2>
-        <ProductGrid products={placeholderProducts}/>
-      </div>
-      <FeaturedCollection/>
-      
-      <FeatureSection/>
+        <ProductGrid products={placeholderProducts} />
+      </section>
+
+      <FeaturedCollection />
+      <FeatureSection />
     </div>
     
   );

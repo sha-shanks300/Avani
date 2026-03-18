@@ -4,57 +4,58 @@ import { FaUser, FaBox, FaClipboardList, FaStore, FaSignOutAlt } from 'react-ico
 
 const AdminSidebar = () => {
   const navigate = useNavigate();
+  
   const handleLogout = () => {
     console.log("Logging out...");
     navigate("/");
   };
 
+  // Refined: High-contrast sidebar links with sharp edges
   const navLinkClass = ({ isActive }) =>
     isActive
-      ? "bg-gray-700 text-white py-3 px-4 rounded flex items-center space-x-2"
-      : "text-gray-300 hover:bg-gray-700 hover:text-white py-3 px-4 rounded flex items-center space-x-2";
+      ? "bg-gray-800 text-white py-3 px-4 flex items-center space-x-3 border-l-4 border-white transition-all"
+      : "text-gray-400 hover:bg-gray-800 hover:text-white py-3 px-4 flex items-center space-x-3 border-l-4 border-transparent transition-all";
 
   return (
-    // CHANGE: min-h-screen to h-full and bg-gray-900 to bg-gray-900 (or bg-blue-950 for blue)
     <div className="p-6 bg-gray-900 h-full text-white flex flex-col">
       {/* Website Brand Link */}
-      <div className="mb-8">
-        <Link to="/admin" className="text-2xl font-bold tracking-tighter hover:text-gray-300">
+      <div className="mb-10 px-4">
+        <Link to="/admin" className="text-2xl font-bold uppercase tracking-widest hover:text-gray-300 transition-colors">
           Rabbit
         </Link>
-        <p className="text-xs text-gray-500 font-medium uppercase mt-2">
-          Admin Dashboard
+        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-2">
+          Admin Panel
         </p>
       </div>
 
       {/* Navigation Links */}
-      <nav className="flex flex-col space-y-2 flex-grow">
+      <nav className="flex flex-col space-y-1 flex-grow">
         <NavLink to="/admin/users" className={navLinkClass}>
-          <FaUser />
-          <span>Users</span>
+          <FaUser className="text-sm" />
+          <span className="text-xs font-bold uppercase tracking-wider">Users</span>
         </NavLink>
         <NavLink to="/admin/products" className={navLinkClass}>
-          <FaBox />
-          <span>Products</span>
+          <FaBox className="text-sm" />
+          <span className="text-xs font-bold uppercase tracking-wider">Products</span>
         </NavLink>
         <NavLink to="/admin/orders" className={navLinkClass}>
-          <FaClipboardList />
-          <span>Orders</span>
+          <FaClipboardList className="text-sm" />
+          <span className="text-xs font-bold uppercase tracking-wider">Orders</span>
         </NavLink>
         <NavLink to="/" className={navLinkClass}>
-          <FaStore />
-          <span>Shop</span>
+          <FaStore className="text-sm" />
+          <span className="text-xs font-bold uppercase tracking-wider">Shop</span>
         </NavLink>
       </nav>
 
       {/* Logout Button */}
-      <div className="mt-auto border-t border-gray-700 pt-4">
+      <div className="mt-auto border-t border-gray-800 pt-6">
         <button
           onClick={handleLogout}
-          className="w-full text-gray-300 hover:bg-red-600 hover:text-white py-3 px-4 rounded flex items-center space-x-2 transition-colors cursor-pointer"
+          className="w-full text-gray-500 hover:text-white py-3 px-4 flex items-center space-x-3 transition-colors cursor-pointer group"
         >
-          <FaSignOutAlt />
-          <span>Logout</span>
+          <FaSignOutAlt className="group-hover:text-red-500 transition-colors" />
+          <span className="text-xs font-bold uppercase tracking-wider">Logout</span>
         </button>
       </div>
     </div>
