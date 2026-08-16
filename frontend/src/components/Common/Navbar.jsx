@@ -4,6 +4,7 @@ import { HiBars3BottomRight, HiOutlineShoppingBag, HiOutlineUser } from "react-i
 import Searchbar from './Searchbar';
 import CartDrawer from '../Layout/CartDrawer';
 import { IoMdClose } from "react-icons/io";
+import logo from "../../assets/avani3.png";
 
 const Navbar = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
@@ -18,24 +19,35 @@ const Navbar = () => {
                 {/* Left - Logo */}
                 <div>
                     <Link to="/" className="text-2xl font-bold uppercase tracking-widest text-gray-900">
-                        Rabbit
+                        <img src={logo} alt="Avani" className="h-10 w-32 object-contain cursor-pointer "/>
                     </Link>
+                    
+                    {/*
+                    <Link to="/" className="text-2xl font-bold uppercase tracking-widest text-gray-900">
+                        AVANI
+                    </Link>
+                    */}
+                    
                 </div>
 
                 {/* Center - Navigation (Desktop) */}
                 <div className="hidden md:flex space-x-8">
                     <Link to="/collections/all?gender=Men" className="text-gray-700 hover:text-black text-xs font-bold uppercase tracking-widest transition-colors">
-                        Men
+                        Perfumes
                     </Link>
                     <Link to="/collections/all?gender=Women" className="text-gray-700 hover:text-black text-xs font-bold uppercase tracking-widest transition-colors">
-                        Women
+                        NFC Keychains
                     </Link>
                     <Link to="#" className="text-gray-700 hover:text-black text-xs font-bold uppercase tracking-widest transition-colors">
-                        Top Wear
+                        Posters
                     </Link>
+                    {/* 
                     <Link to="#" className="text-gray-700 hover:text-black text-xs font-bold uppercase tracking-widest transition-colors">
                         Bottom Wear
                     </Link>
+                    
+                    */}
+                    
                 </div>
 
                 {/* Right - Icons */}
