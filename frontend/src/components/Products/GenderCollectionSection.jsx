@@ -1,6 +1,6 @@
 import React from 'react'
-import mensCollectionImage from "../../assets/mens-collection.webp";
-import womensCollectionImage from "../../assets/womens-collection.webp";
+import mensCollectionImage from "../../assets/him.jpeg";
+import womensCollectionImage from "../../assets/her.jpeg";
 import { Link } from 'react-router-dom';
 
 const GenderCollectionSection = () => {
@@ -16,7 +16,7 @@ const GenderCollectionSection = () => {
                 />
                 <div className="absolute bottom-6 left-6 right-6 md:bottom-10 md:left-10 bg-white p-6 shadow-sm">
                     <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2 uppercase tracking-tight">
-                        Women's Collection
+                        For Her
                     </h2>
                     <Link 
                         to="/collections/all?gender=Women" 
@@ -36,7 +36,7 @@ const GenderCollectionSection = () => {
                 />
                 <div className="absolute bottom-6 left-6 right-6 md:bottom-10 md:left-10 bg-white p-6 shadow-sm">
                     <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2 uppercase tracking-tight">
-                        Men's Collection
+                        For Him
                     </h2>
                     <Link 
                         to="/collections/all?gender=Men" 

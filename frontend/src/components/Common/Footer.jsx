@@ -40,10 +40,12 @@ const Footer = () => {
             <div>
                 <h3 className="text-sm font-bold uppercase tracking-widest text-gray-900 mb-6">Shop</h3>
                 <ul className="space-y-3 text-sm text-gray-600">
-                    <li><Link to="#" className="hover:text-black transition-colors">Men's Topwear</Link></li>
-                    <li><Link to="#" className="hover:text-black transition-colors">Women's Topwear</Link></li>
-                    <li><Link to="#" className="hover:text-black transition-colors">Men's Bottomwear</Link></li>
+                    <li><Link to="#" className="hover:text-black transition-colors">Perfumes</Link></li>
+                    <li><Link to="#" className="hover:text-black transition-colors">NFC Keychains</Link></li>
+                    <li><Link to="#" className="hover:text-black transition-colors">Posters</Link></li>
+                    {/*
                     <li><Link to="#" className="hover:text-black transition-colors">Women's Bottomwear</Link></li>
+                    */}
                 </ul>
             </div>
 
@@ -83,7 +85,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="container mx-auto mt-16 px-4 sm:px-6 lg:px-8 border-t border-gray-100 pt-8">
             <p className="text-gray-400 text-[11px] uppercase tracking-widest text-center">
-                © 2026 Rabbit. All Rights Reserved.
+                © 2026 AVANI. All Rights Reserved.
             </p>
         </div>
     </footer>

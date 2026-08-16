@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { FaUser, FaBox, FaClipboardList, FaStore, FaSignOutAlt } from 'react-icons/fa';
+import logo from "../../assets/avaniadmin3.png";
 
 const AdminSidebar = () => {
   const navigate = useNavigate();
@@ -19,9 +20,17 @@ const AdminSidebar = () => {
   return (
     <div className="p-6 bg-gray-900 h-full text-white flex flex-col">
       {/* Website Brand Link */}
+
+      
+
       <div className="mb-10 px-4">
+        {/*
         <Link to="/admin" className="text-2xl font-bold uppercase tracking-widest hover:text-gray-300 transition-colors">
           Rabbit
+        </Link>
+        */}
+        <Link to="/admin" className="text-2xl font-bold uppercase tracking-widest hover:text-gray-300 transition-colors">
+          <img src={logo} alt="Avani" className="h-13 w-32 object-contain cursor-pointer -ml-8"/>
         </Link>
         <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-2">
           Admin Panel
