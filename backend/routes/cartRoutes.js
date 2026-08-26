@@ -20,7 +20,8 @@ const getCart = async (userId, guestId) => {
 // @access Public
 
 router.post("/", async (req, res) => {
-  const { productId, quantity, size, color, guestId, userId } = req.body;
+  const { productId, size, color, guestId, userId } = req.body;
+  const quantity = Number(req.body.quantity);
   try {
     const product = await Product.findById(productId);
     if (!product) return res.status(404).json({ message: "Product not found" });
@@ -45,7 +46,7 @@ router.post("/", async (req, res) => {
         cart.products.push({
           productId,
           name: product.name,
-          image: product.images[0].url,
+          image: product.images?.[0]?.url,
           price: product.price,
           size,
           color,
@@ -69,7 +70,7 @@ router.post("/", async (req, res) => {
           {
             productId,
             name: product.name,
-            image: product.images[0].url,
+            image: product.images?.[0]?.url,
             price: product.price,
             size,
             color,
@@ -91,7 +92,8 @@ router.post("/", async (req, res) => {
 //@access Public
 
 router.put("/",async(req,res) => {
-  const { productId, quantity, size, color, guestId, userId } = req.body;
+  const { productId, size, color, guestId, userId } = req.body;
+  const quantity = Number(req.body.quantity);
 
   try {
     let cart = await getCart(userId, guestId);

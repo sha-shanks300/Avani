@@ -71,10 +71,15 @@ const orderSchema = new mongoose.Schema(
     },
     paymentStatus: {
       type: String,
+      default: "pending",
+    },
+    paymentDetails: {
+      type: mongoose.Schema.Types.Mixed,
     },
     status: {
       type: String,
-      default: "Pending",
+      enum: ["Processing","Shipped","Delivered","Cancelled"],
+      default: "Processing",
     },
   },
   { timestamps: true }
