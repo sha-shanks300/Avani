@@ -1,29 +1,22 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchOrderDetails } from "../redux/slices/orderSlice";
 
 const OrderDetailsPage = () => {
   const { id } = useParams();
-  const [orderDetails, setOrderDetails] = useState(null);
+  const dispatch = useDispatch();
+  const { orderDetails, loading, error } = useSelector((state) => state.orders);
 
   useEffect(() => {
-    const mockOrder = {
-      _id: id || "67540ced3376121b361a0ed0",
-      createdAt: new Date("2024-12-07"),
-      isPaid: true,
-      isDelivered: false,
-      paymentMethod: "PayPal",
-      shippingMethod: "Standard",
-      shippingAddress: { address: "123 Main St", city: "New York", country: "USA" },
-      orderItems: [
-        { productId: "1", name: "Slim-Fit Easy-Iron Shirt", price: 34.99, quantity: 1, image: "https://picsum.photos/150?random=1" },
-        { productId: "2", name: "Classic Oxford Button-Down Shirt", price: 39.99, quantity: 1, image: "https://picsum.photos/150?random=2" },
-        { productId: "3", name: "Chino Pants", price: 55, quantity: 1, image: "https://picsum.photos/150?random=3" },
-      ],
-    };
-    setOrderDetails(mockOrder);
-  }, [id]);
+    if (id) {
+      dispatch(fetchOrderDetails(id));
+    }
+  }, [dispatch, id]);
 
-  if (!orderDetails) return <div className="p-10 text-center uppercase tracking-widest text-xs">Loading Order...</div>;
+  if (loading) return <div className="p-10 text-center uppercase tracking-widest text-xs">Loading Order...</div>;
+  if (error) return <div className="p-10 text-center uppercase tracking-widest text-xs">Error: {error}</div>;
+  if (!orderDetails) return <div className="p-10 text-center uppercase tracking-widest text-xs">No order details found.</div>;
 
   return (
     <div className="max-w-7xl mx-auto p-4 sm:p-6 py-12">
@@ -65,9 +58,9 @@ const OrderDetailsPage = () => {
           </div>
           <div>
             <h3 className="text-xs font-bold uppercase tracking-widest text-gray-900 mb-4">Shipping Info</h3>
-            <p className="text-sm text-gray-600 mb-1">Method: <span className="text-gray-900">{orderDetails.shippingMethod}</span></p>
+            <p className="text-sm text-gray-600 mb-1">Method: <span className="text-gray-900">Standard</span></p>
             <p className="text-sm text-gray-600">
-              Address: <span className="text-gray-900">{orderDetails.shippingAddress.address}, {orderDetails.shippingAddress.city}, {orderDetails.shippingAddress.country}</span>
+              Address: <span className="text-gray-900">{orderDetails.shippingAddress?.address}, {orderDetails.shippingAddress?.city}, {orderDetails.shippingAddress?.country}</span>
             </p>
           </div>
         </div>
@@ -85,7 +78,7 @@ const OrderDetailsPage = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50">
-              {orderDetails.orderItems.map((item) => (
+              {(orderDetails.orderItems || []).map((item) => (
                 <tr key={item.productId} className="hover:bg-gray-50 transition-colors">
                   <td className="py-4 px-4 flex items-center">
                     <img
@@ -98,13 +91,13 @@ const OrderDetailsPage = () => {
                     </Link>
                   </td>
                   <td className="py-4 px-4 text-center text-sm font-medium text-gray-700">
-                    ${item.price.toFixed(2)}
+                    ${Number(item.price || 0).toFixed(2)}
                   </td>
                   <td className="py-4 px-4 text-center text-sm text-gray-500">
                     {item.quantity}
                   </td>
                   <td className="py-4 px-4 text-right text-sm font-bold text-gray-900">
-                    ${(item.price * item.quantity).toFixed(2)}
+                    ${Number((item.price || 0) * (item.quantity || 0)).toFixed(2)}
                   </td>
                 </tr>
               ))}

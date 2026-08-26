@@ -1,10 +1,26 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { addUser, deleteUser, fetchUsers, updateUser } from '../../redux/slices/adminSlice';
 
 const UserManagement = () => {
-    const [users, setUsers] = useState([
-        { _id: "1", name: "John Doe", email: "john@example.com", role: "admin" },
-        { _id: "2", name: "Jane Smith", email: "jane@example.com", role: "customer" },
-    ]);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const {user} =useSelector((state) => state.auth);
+    const {users, loading, error} = useSelector((state) => state.admin);
+
+    useEffect(() => {
+        if(user && user.role !== "admin"){
+            navigate("/");
+        }
+    },[user, navigate]);
+
+    useEffect(() => {
+        if(user && user.role ==="admin"){
+            dispatch(fetchUsers());
+        }
+    },[dispatch, user]);
 
     const [formData, setFormData] = useState({
         name: "",
@@ -19,35 +35,26 @@ const UserManagement = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const newUser = {
-            _id: Date.now().toString(),
-            name: formData.name,
-            email: formData.email,
-            role: formData.role
-        };
-
-        setUsers([...users, newUser]);
+        dispatch(addUser(formData));
         setFormData({ name: "", email: "", password: "", role: "customer" })
     }
 
     const handleRoleChange = (userId, newRole) => {
-        setUsers((prevUsers) =>
-            prevUsers.map((user) =>
-                user._id === userId ? { ...user, role: newRole } : user
-            )
-        );
+        dispatch(updateUser({id: userId, role: newRole}));
+        
     };
 
     const handleDeleteUser = (userId) => {
         if (window.confirm("Are you sure you want to delete this user?")) {
-            setUsers(users.filter((user) => user._id !== userId));
+            dispatch(deleteUser(userId));
         }
     };
 
     return (
         <div className='max-w-7xl mx-auto p-6'>
             <h2 className='text-2xl font-bold mb-6 uppercase tracking-tight text-gray-900'>User Management</h2>
-            
+            {loading && <p> Loading...</p>}
+            {error && <p> Error: {error}</p>}
             {/* Form Section */}
             <div className='p-8 mb-10 bg-white border border-gray-100'>
                 <h3 className='text-xs font-bold uppercase tracking-widest text-gray-900 mb-6'>Add New User</h3>
@@ -91,7 +98,7 @@ const UserManagement = () => {
                         </tr>
                     </thead>
                     <tbody className="text-sm text-gray-700 divide-y divide-gray-50">
-                        {users.map((user) => (
+                        {(users || []).map((user) => (
                             <tr key={user._id} className="hover:bg-gray-50 transition-colors">
                                 <td className="py-4 px-6 font-medium text-gray-900">{user.name}</td>
                                 <td className="py-4 px-6 text-gray-600">{user.email}</td>

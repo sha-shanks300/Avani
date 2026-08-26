@@ -1,17 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PayPalButton from "./PayPalButton";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { createCheckout } from "../../redux/slices/checkoutSlice";
 
-const cart = {
-  products: [
-    { name: "Stylish Jacket", size: "M", color: "Black", price: 120, image: "https://picsum.photos/150?random=1" },
-    { name: "Casual Sneakers", size: "42", color: "White", price: 75, image: "https://picsum.photos/150?random=2" },
-  ],
-  totalPrice: 195,
-};
+
 
 const Checkout = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const {cart, loading, error} = useSelector((state) => state.cart);
+  const {user} = useSelector((state) => state.auth);
+
   const [checkoutId, setCheckoutId] = useState(null);
 
   const [shippingAddress, setShippingAddress] = useState({
@@ -24,20 +25,77 @@ const Checkout = () => {
     phone: "",
   });
 
+  // Ensure cart is loaded before proceeding
+  useEffect(() => {
+    if(!cart || !cart.products || cart.products.length === 0){
+      navigate("/");
+    }
+  },[cart, navigate]);
+
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setShippingAddress((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleCreateCheckout = (e) => {
+  const handleCreateCheckout = async (e) => {
     e.preventDefault(); 
-    setCheckoutId(12345);
+    if(cart && cart.products.length > 0){
+      const res = await dispatch(createCheckout({
+        checkoutItems: cart.products,
+        shippingAddress,
+        paymentMethod: "Paypal",
+        totalPrice: cart.totalPrice,
+      }));
+      if(res.payload && res.payload._id){
+        setCheckoutId(res.payload._id); //Set checkout ID if checkout was successful
+      }
+    }
   };
 
-  const handlePaymentSuccess = (details) => {
-    console.log("Payment Successful:", details);
-    navigate("/order-confirmation");
+  const handlePaymentSuccess = async (details) => {
+    try {
+      await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/checkout/${checkoutId}/pay`,
+        {paymentStatus: "paid", paymentDetails: details},
+        {
+          headers:{
+            Authorization: `Bearer ${localStorage.getItem("userToken")}`
+          },
+        }
+      );
+      
+      await handleFinalizeCheckout(checkoutId);
+    
+    } catch (error) {
+      console.error(error);
+    }
   };
+
+
+  const handleFinalizeCheckout = async(checkoutId) => {
+    try {
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/checkout/${checkoutId}/finalize`,
+        {},
+        {
+          headers:{
+            Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+          },
+        }
+      );
+      navigate("/order-confirmation");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  if (loading){
+    return <p>Loading cart...</p>
+  }
+  if (error){
+    return <p>Error:{error}</p>
+  }
+  if(!cart || !cart.products || cart.products.length == 0){
+    return <p>Your cart is empty</p>
+  }
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-7xl mx-auto py-12 px-6">
@@ -54,7 +112,7 @@ const Checkout = () => {
               <input
                 type="email"
                 className="w-full p-3 border border-gray-100 bg-gray-50 text-gray-500 cursor-not-allowed"
-                value="shashaank@snu.edu.in"
+                value={user ? user.email:""}
                 disabled
               />
             </div>
@@ -73,7 +131,7 @@ const Checkout = () => {
                   onChange={handleInputChange}
                   className={`w-full p-3 border rounded-none transition-colors ${checkoutId ? 'bg-gray-50 border-gray-100 text-gray-400' : 'border-gray-200 focus:border-black'}`}
                   required
-                  disabled={checkoutId}
+                  disabled={!!checkoutId}
                 />
               </div>
               <div>
@@ -85,7 +143,7 @@ const Checkout = () => {
                   onChange={handleInputChange}
                   className={`w-full p-3 border rounded-none transition-colors ${checkoutId ? 'bg-gray-50 border-gray-100 text-gray-400' : 'border-gray-200 focus:border-black'}`}
                   required
-                  disabled={checkoutId}
+                  disabled={!!checkoutId}
                 />
               </div>
             </div>
@@ -99,7 +157,7 @@ const Checkout = () => {
                 onChange={handleInputChange}
                 className={`w-full p-3 border rounded-none transition-colors ${checkoutId ? 'bg-gray-50 border-gray-100 text-gray-400' : 'border-gray-200 focus:border-black'}`}
                 required
-                disabled={checkoutId}
+                disabled={!!checkoutId}
               />
             </div>
 
@@ -113,7 +171,7 @@ const Checkout = () => {
                   onChange={handleInputChange}
                   className={`w-full p-3 border rounded-none transition-colors ${checkoutId ? 'bg-gray-50 border-gray-100 text-gray-400' : 'border-gray-200 focus:border-black'}`}
                   required
-                  disabled={checkoutId}
+                  disabled={!!checkoutId}
                 />
               </div>
               <div>
@@ -125,7 +183,7 @@ const Checkout = () => {
                   onChange={handleInputChange}
                   className={`w-full p-3 border rounded-none transition-colors ${checkoutId ? 'bg-gray-50 border-gray-100 text-gray-400' : 'border-gray-200 focus:border-black'}`}
                   required
-                  disabled={checkoutId}
+                  disabled={!!checkoutId}
                 />
               </div>
             </div>
@@ -139,7 +197,7 @@ const Checkout = () => {
                 onChange={handleInputChange}
                 className={`w-full p-3 border rounded-none transition-colors ${checkoutId ? 'bg-gray-50 border-gray-100 text-gray-400' : 'border-gray-200 focus:border-black'}`}
                 required
-                disabled={checkoutId}
+                disabled={!!checkoutId}
               />
             </div>
           </div>
@@ -159,7 +217,7 @@ const Checkout = () => {
                 <PayPalButton 
                   amount={cart.totalPrice} 
                   onSuccess={handlePaymentSuccess} 
-                  onError={(err) => alert("Payment failed. Try again.")}
+                  onError={() => alert("Payment failed. Try again.")}
                 />
               </div>
             )}

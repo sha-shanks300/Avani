@@ -1,6 +1,9 @@
+import axios from 'axios';
 import React, { useRef, useState, useEffect } from 'react'
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { Link } from 'react-router-dom';
+
+
 
 const NewArrivals = () => {
     const scrollRef = useRef(null);
@@ -10,14 +13,19 @@ const NewArrivals = () => {
     const [canScrollRight, setCanScrollRight] = useState(true);
     const [canScrollLeft, setCanScrollLeft] = useState(false);
 
-    // Mock data (Keeping your structure)
-    const newArrivals = [
-        { _id: "1", name: "Stylish Jacket", price: 120, images: [{ url: "https://picsum.photos/500/500/?random=1" }] },
-        { _id: "2", name: "Stylish Jacket", price: 120, images: [{ url: "https://picsum.photos/500/500/?random=2" }] },
-        { _id: "3", name: "Stylish Jacket", price: 120, images: [{ url: "https://picsum.photos/500/500/?random=3" }] },
-        { _id: "4", name: "Stylish Jacket", price: 120, images: [{ url: "https://picsum.photos/500/500/?random=4" }] },
-        { _id: "5", name: "Stylish Jacket", price: 120, images: [{ url: "https://picsum.photos/500/500/?random=5" }] },
-    ];
+    const [newArrivals, setNewArrivals] = useState([]);
+
+    useEffect(() => {
+        const fetchNewArrivals = async()=>{
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/products/new-arrivals`);
+                setNewArrivals(response.data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchNewArrivals();
+    }, []);
 
     const handleMouseDown = (e) => {
         setIsDragging(true);
@@ -60,7 +68,7 @@ const NewArrivals = () => {
             if (container) container.removeEventListener("scroll", updateScrollButton);
             window.removeEventListener("resize", updateScrollButton);
         };
-    }, []);
+    }, [newArrivals]);
 
     return (
         <section className="py-16 px-4 lg:px-0">
@@ -106,7 +114,7 @@ const NewArrivals = () => {
                         <div key={product._id} className="min-w-[80%] sm:min-w-[45%] lg:min-w-[25%] snap-start group">
                             <div className="relative overflow-hidden mb-4">
                                 <img 
-                                    src={product.images[0]?.url} 
+                                    src={product.images?.[0]?.url} 
                                     alt={product.name} 
                                     className="w-full h-[400px] object-cover rounded-none transition-transform duration-500 group-hover:scale-105" 
                                     draggable="false"

@@ -18,7 +18,7 @@ const PayPalButton = ({ amount, onSuccess, onError }) => {
                         return actions.order.create({
                             purchase_units: [{ 
                                 amount: { 
-                                    value: amount.toString() // Ensuring amount is a string
+                                    value: parseFloat(amount).toFixed(2) // Ensuring amount is a string
                                 } 
                             }]
                         });

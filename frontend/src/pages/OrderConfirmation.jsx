@@ -1,38 +1,28 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { clearCart } from "../redux/slices/cartSlice";
 
-// Sample data structure
-const checkout = {
-  _id: "12323",
-  createdAt: new Date(), 
-  checkoutItems: [
-    {
-      productId: "1",
-      name: "Jacket",
-      color: "black",
-      size: "M",
-      price: 150,
-      quantity: 1,
-      image: "https://picsum.photos/150?random=1",
-    },
-    {
-      productId: "2",
-      name: "T-shirt",
-      color: "black",
-      size: "M",
-      price: 120,
-      quantity: 2,
-      image: "https://picsum.photos/150?random=2",
-    },
-  ],
-  shippingAddress: {
-    address: "123 Fashion Street",
-    city: "New York",
-    country: "USA",
-  }
-};
+
 
 const OrderConfirmation = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const {checkout} = useSelector((state) => state.checkout);
+
+  //clear the cart when the order is confirmed
+  useEffect(()=>{
+    if(checkout && checkout._id){
+      dispatch(clearCart());
+      localStorage.removeItem("cart");
+    }
+    else{
+      navigate("/my-orders");
+    }
+  },[checkout, dispatch, navigate]);
+
   const estimatedDelivery = useMemo(() => {
+    if (!checkout?.createdAt) return "";
     const orderDate = new Date(checkout.createdAt);
     orderDate.setDate(orderDate.getDate() + 10);
     return orderDate.toLocaleDateString("en-GB", {
@@ -40,10 +30,13 @@ const OrderConfirmation = () => {
       month: "long",
       year: "numeric",
     });
-  }, [checkout.createdAt]);
+  }, [checkout]);
 
-  const calculateTotal = () => 
-    checkout.checkoutItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const calculateTotal = () =>
+    (checkout?.checkoutItems || []).reduce((acc, item) => acc + item.price * item.quantity, 0);
+
+  // The effect above redirects when there is no checkout; render nothing until it does.
+  if (!checkout || !checkout._id) return null;
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white min-h-screen">
@@ -59,7 +52,7 @@ const OrderConfirmation = () => {
             </h2>
             <p className="text-lg font-bold text-gray-900">#{checkout._id}</p>
             <p className="text-sm text-gray-400 mt-1">
-              Placed on {checkout.createdAt.toLocaleDateString()}
+              Placed on {new Date(checkout.createdAt).toLocaleDateString()}
             </p>
           </div>
           <div className="mt-4 md:mt-0 flex items-center">

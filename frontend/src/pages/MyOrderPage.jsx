@@ -1,40 +1,23 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { fetchUserOrders } from '../redux/slices/orderSlice';
 
 const MyOrderPage = () => {
-    const [orders, setOrders] = useState([]);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const {orders, loading , error} = useSelector((state) => state.orders);
 
     useEffect(() => {
-        // Mock data fetch
-        setTimeout(() => {
-            const mockOrders = [
-                {
-                    _id: "12345",
-                    createdAt: new Date(),
-                    shippingAddress: { city: "New York", country: "USA" },
-                    orderItems: [{ name: "Product 1", image: "https://picsum.photos/500/500?random=1" }],
-                    totalPrice: 100,
-                    isPaid: true,
-                    status: "Delivered"
-                },
-                {
-                    _id: "3456",
-                    createdAt: new Date(),
-                    shippingAddress: { city: "New York", country: "USA" },
-                    orderItems: [{ name: "Product 2", image: "https://picsum.photos/500/500?random=2" }],
-                    totalPrice: 100,
-                    isPaid: true,
-                    status: "Processing"
-                },
-            ];
-            setOrders(mockOrders);
-        }, 500);
-    }, []);
-
+        dispatch(fetchUserOrders());
+    },[dispatch]);
+    
     const handleRowClick = (orderId) => {
         navigate(`/order/${orderId}`)
     };
+
+    if(loading) return <p>Loading...</p>
+    if(error) return <p>Error: {error}</p>
 
     return (
         <div className='max-w-7xl mx-auto p-4 sm:p-6 py-12'>
@@ -55,7 +38,7 @@ const MyOrderPage = () => {
                         </tr>
                     </thead>
                     <tbody className='text-sm text-gray-700 divide-y divide-gray-50'>
-                        {orders.length > 0 ? (
+                        {orders?.length > 0 ? (
                             orders.map((order) => (
                                 <tr 
                                     key={order._id} 
@@ -63,11 +46,13 @@ const MyOrderPage = () => {
                                     className='hover:bg-gray-50 cursor-pointer transition-colors'
                                 >
                                     <td className='py-4 px-4'>
-                                        <img 
-                                            src={order.orderItems[0].image} 
-                                            alt={order.orderItems[0].name} 
-                                            className='w-12 h-12 object-cover rounded-none border border-gray-100'
-                                        />
+                                        {order.orderItems?.[0] && (
+                                            <img 
+                                                src={order.orderItems[0].image} 
+                                                alt={order.orderItems[0].name} 
+                                                className='w-12 h-12 object-cover rounded-none border border-gray-100'
+                                            />
+                                        )}
                                     </td>
                                     <td className='py-4 px-4 font-semibold text-gray-900'>
                                         #{order._id}
@@ -79,7 +64,7 @@ const MyOrderPage = () => {
                                         {order.shippingAddress ? order.shippingAddress.country : "N/A"}
                                     </td>
                                     <td className='py-4 px-4'>
-                                        {order.orderItems.length}
+                                        {order.orderItems?.length || 0}
                                     </td>
                                     <td className='py-4 px-4 font-medium'>
                                         ${order.totalPrice}

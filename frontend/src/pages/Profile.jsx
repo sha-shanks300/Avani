@@ -1,10 +1,27 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import MyOrderPage from './MyOrderPage'
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { clearCart } from '../redux/slices/cartSlice';
+import { logout } from '../redux/slices/authSlice';
 
 const Profile = () => {
+  
+
+  const {user} = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if(!user){
+      navigate("/login");
+    }
+  },[user, navigate])
+
   const handleLogout = () => {
-    // Logic for logout
-    console.log("User logged out");
+    dispatch(logout());
+    dispatch(clearCart());
+    navigate("/login");
   };
 
   return (
@@ -16,9 +33,9 @@ const Profile = () => {
           <div className='w-full md:w-1/3 lg:w-1/4'>
             <div className='border border-gray-100 p-6 md:p-8 bg-white'>
               <h1 className='text-2xl md:text-3xl font-bold mb-2 uppercase tracking-tight text-gray-900'>
-                John Doe
+                {user?.name}
               </h1>
-              <p className='text-sm text-gray-500 mb-8 lowercase'>john@example.com</p>
+              <p className='text-sm text-gray-500 mb-8 lowercase'>{user?.email}</p>
               
               <div className='space-y-4'>
                 {/* Additional professional profile links could go here */}

@@ -3,16 +3,16 @@ import { useSearchParams } from "react-router-dom";
 const SortOptions = () => {
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const handleSortChange = (e) => {
+        const handleSortChange = (e) => {
         const sortBy = e.target.value;
         const newParams = new URLSearchParams(searchParams);
-        
+
         if (sortBy) {
-            newParams.set("sort", sortBy);
+            newParams.set("sortBy", sortBy);
         } else {
-            newParams.delete("sort");
+            newParams.delete("sortBy");
         }
-        
+
         setSearchParams(newParams);
     };
 
@@ -23,7 +23,7 @@ const SortOptions = () => {
                 <select
                     id="sort"
                     onChange={handleSortChange}
-                    value={searchParams.get("sort") || ""}
+                    value={searchParams.get("sortBy") || ""}
                     className="appearance-none bg-white border border-gray-300 text-gray-700 py-2 pl-4 pr-10 rounded-none text-sm focus:outline-none focus:border-black cursor-pointer transition-colors"
                 >
                     <option value="">Sort By: Default</option>

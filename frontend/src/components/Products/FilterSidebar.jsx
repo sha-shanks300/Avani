@@ -159,6 +159,42 @@ const FilterSidebar = () => {
                 </div>
             </div>
 
+            {/* Material Filter */}
+            <div className='mb-8'>
+                <label className='block text-xs font-semibold uppercase tracking-wider text-gray-800 mb-4'>Material</label>
+                {materials.map((material) => (
+                    <div key={material} className='flex items-center mb-2'>
+                        <input 
+                            type="checkbox" 
+                            name="material" 
+                            value={material} 
+                            onChange={handleFilterChange} 
+                            checked={filters.material.includes(material)}
+                            className='mr-3 h-4 w-4 accent-black cursor-pointer rounded'
+                        />
+                        <span className='text-sm text-gray-600'>{material}</span>
+                    </div>
+                ))}
+            </div>
+
+            {/* Brand Filter */}
+            <div className='mb-8'>
+                <label className='block text-xs font-semibold uppercase tracking-wider text-gray-800 mb-4'>Brand</label>
+                {brands.map((brand) => (
+                    <div key={brand} className='flex items-center mb-2'>
+                        <input 
+                            type="checkbox" 
+                            name="brand" 
+                            value={brand} 
+                            onChange={handleFilterChange} 
+                            checked={filters.brand.includes(brand)}
+                            className='mr-3 h-4 w-4 accent-black cursor-pointer rounded'
+                        />
+                        <span className='text-sm text-gray-600'>{brand}</span>
+                    </div>
+                ))}
+            </div>
+
             {/* Price Range Filter */}
             <div className='mb-8'>
                 <label className='block text-xs font-semibold uppercase tracking-wider text-gray-800 mb-4'>Price Range</label>

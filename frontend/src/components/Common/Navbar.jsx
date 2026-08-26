@@ -5,10 +5,18 @@ import Searchbar from './Searchbar';
 import CartDrawer from '../Layout/CartDrawer';
 import { IoMdClose } from "react-icons/io";
 import logo from "../../assets/avani3.png";
+import { useSelector } from 'react-redux';
 
 const Navbar = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [navDrawerOpen, setNavDrawerOpen] = useState(false);
+
+    const {cart} = useSelector((state) => state.cart);
+    const {user} = useSelector((state) => state.auth);
+    const cartItemCount = cart?.products?.reduce((total, product) => total + product.quantity, 0) || 
+    0;
+
+
 
     const toggleNavDrawer = () => setNavDrawerOpen(!navDrawerOpen);
     const toggleCartDrawer = () => setDrawerOpen(!drawerOpen);
@@ -52,17 +60,21 @@ const Navbar = () => {
 
                 {/* Right - Icons */}
                 <div className="flex items-center space-x-5">
-                    <Link to="/admin" className='block bg-black px-2 py-0.5 rounded-none text-[10px] font-bold uppercase tracking-tighter text-white hover:bg-gray-800 transition-colors'>
+                    {user && user.role === "admin" && (
+                        <Link to="/admin" className='block bg-black px-2 py-0.5 rounded-none text-[10px] font-bold uppercase tracking-tighter text-white hover:bg-gray-800 transition-colors'>
                         Admin
                     </Link>
+                    )}
+                    
                     <Link to="/profile" className="hover:text-black transition-colors">
                         <HiOutlineUser className="h-6 w-6 text-gray-700"/>
                     </Link>
                     <button className="relative hover:text-black cursor-pointer transition-colors" onClick={toggleCartDrawer}>
                         <HiOutlineShoppingBag className="h-6 w-6 text-gray-700"/>
-                        <span className="absolute -top-1 bg-[#ea2e0e] text-white text-[10px] font-bold rounded-full px-1.5 py-0.5">
-                            4
-                        </span>
+                        {cartItemCount > 0 && (<span className="absolute -top-1 bg-[#ea2e0e] text-white text-[10px] font-bold rounded-full px-1.5 py-0.5">
+                            {cartItemCount }
+                        </span>)}
+                        
                     </button>
                     
                     {/* Search Component */}

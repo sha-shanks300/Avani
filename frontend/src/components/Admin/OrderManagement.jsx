@@ -1,30 +1,32 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { fetchAllOrders, updateOrderStatus } from '../../redux/slices/adminOrderSlice';
 
 const OrderManagement = () => {
-    // 1. Mock Data for orders
-    const [orders, setOrders] = useState([
-        {
-            _id: "12312321",
-            user: { name: "John Doe" },
-            totalPrice: 110,
-            status: "Processing",
-        },
-        {
-            _id: "12312322",
-            user: { name: "Jane Smith" },
-            totalPrice: 245,
-            status: "Shipped",
-        },
-    ]);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const {user} = useSelector((state) => state.auth);
+    const {orders, loading, error} = useSelector((state) => state.adminOrders);
+
+    useEffect(()=>{
+        if(!user || user.role !== "admin"){
+            navigate("/");
+        }else{
+            dispatch(fetchAllOrders());
+        }
+    },[dispatch, user, navigate]);
 
     // 2. Updated Handler
-    const handleStatusChange = (orderId, newStatus) => {
-        setOrders((prevOrders) =>
-            prevOrders.map((order) =>
-                order._id === orderId ? { ...order, status: newStatus } : order
-            )
-        );
+    const handleStatusChange = (orderId, status) => {
+        dispatch(updateOrderStatus({id: orderId, status}));
+
     };
+
+    if(loading) return <p>Loading...</p>
+    if(error) return <p>Error: {error}</p>
+
 
     return (
         <div className='max-w-7xl mx-auto p-6'>
@@ -42,12 +44,12 @@ const OrderManagement = () => {
                         </tr>
                     </thead>
                     <tbody className='text-sm text-gray-700 divide-y divide-gray-50'>
-                        {orders.length > 0 ? (
+                        {orders?.length > 0 ? (
                             orders.map((order) => (
                                 <tr key={order._id} className='hover:bg-gray-50 transition-colors'>
                                     <td className='py-4 px-6 font-mono text-gray-600'>#{order._id}</td>
-                                    <td className='py-4 px-6 font-medium text-gray-900'>{order.user.name}</td>
-                                    <td className='py-4 px-6'>${order.totalPrice}</td>
+                                    <td className='py-4 px-6 font-medium text-gray-900'>{order.user?.name || "N/A"}</td>
+                                    <td className='py-4 px-6'>${Number(order.totalPrice || 0).toFixed(2)}</td>
                                     <td className='py-4 px-6'>
                                         <select 
                                             value={order.status}
@@ -92,4 +94,4 @@ const OrderManagement = () => {
     );
 };
 
-export default OrderManagement;
+export default OrderManagement;  
