@@ -2,12 +2,16 @@ import React from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { FaUser, FaBox, FaClipboardList, FaStore, FaSignOutAlt } from 'react-icons/fa';
 import logo from "../../assets/avaniadmin3.png";
+import { useDispatch } from 'react-redux';
+import { clearCart } from '../../redux/slices/cartSlice';
+import { logout } from '../../redux/slices/authSlice';
 
 const AdminSidebar = () => {
   const navigate = useNavigate();
-  
+  const dispatch = useDispatch();
   const handleLogout = () => {
-    console.log("Logging out...");
+    dispatch(logout());
+    dispatch(clearCart());
     navigate("/");
   };
 

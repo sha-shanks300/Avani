@@ -18,17 +18,13 @@ const ProductDetails = ({ productId, isHome = false }) => {
   );
   const { user, guestId } = useSelector((state) => state.auth);
 
-  // Tracked with the product it belongs to so a new product resets the selection.
-  const [pickedImage, setPickedImage] = useState({ id: null, url: null });
+  const [mainImage, setMainImage] = useState(null);
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   const productFetchId = productId || id;
-  const displayImage =
-    (pickedImage.id === productFetchId ? pickedImage.url : null) ||
-    selectedProduct?.images?.[0]?.url;
 
   useEffect(() => {
     if (productFetchId) {
@@ -37,6 +33,11 @@ const ProductDetails = ({ productId, isHome = false }) => {
     }
   }, [dispatch, productFetchId]);
 
+  useEffect(() => {
+    if (selectedProduct?.images?.length > 0) {
+      setMainImage(selectedProduct.images[0].url);
+    }
+  }, [selectedProduct]);
 
   const handleQuantityChange = (action) => {
     if (action === "plus") setQuantity((prev) => prev + 1);
@@ -84,13 +85,13 @@ const ProductDetails = ({ productId, isHome = false }) => {
           <div className="flex flex-col md:flex-row gap-12">
             {/* Left: Thumbnails */}
             <div className="hidden md:flex flex-col space-y-4">
-              {(selectedProduct.images || []).map((image, index) => (
+              {selectedProduct.images.map((image, index) => (
                 <img
                   key={index}
                   src={image.url}
                   alt={image.altText}
-                  className={`w-20 h-24 object-cover cursor-pointer transition-opacity border ${displayImage === image.url ? "border-black" : "border-transparent opacity-60 hover:opacity-100"}`}
-                  onClick={() => setPickedImage({ id: productFetchId, url: image.url })}
+                  className={`w-20 h-24 object-cover cursor-pointer transition-opacity border ${mainImage === image.url ? "border-black" : "border-transparent opacity-60 hover:opacity-100"}`}
+                  onClick={() => setMainImage(image.url)}
                 />
               ))}
             </div>
@@ -98,7 +99,7 @@ const ProductDetails = ({ productId, isHome = false }) => {
             {/* Center: Main Image */}
             <div className="md:w-1/2">
               <img
-                src={displayImage}
+                src={mainImage}
                 alt="Main Product"
                 className="w-full aspect-[4/5] object-cover"
               />
@@ -131,7 +132,7 @@ const ProductDetails = ({ productId, isHome = false }) => {
                   Color
                 </p>
                 <div className="flex gap-3">
-                  {(selectedProduct.colors || []).map((color) => (
+                  {selectedProduct.colors.map((color) => (
                     <button
                       key={color}
                       className={`w-8 h-8 rounded-full border transition-all ${selectedColor === color ? "ring-2 ring-black ring-offset-2" : "border-gray-200"}`}
@@ -147,7 +148,7 @@ const ProductDetails = ({ productId, isHome = false }) => {
                   Size
                 </p>
                 <div className="flex gap-2">
-                  {(selectedProduct.sizes || []).map((size) => (
+                  {selectedProduct.sizes.map((size) => (
                     <button
                       key={size}
                       className={`w-12 h-12 flex items-center justify-center border text-sm transition-all ${selectedSize === size ? "bg-black text-white border-black" : "border-gray-200 text-gray-600 hover:border-black"}`}
@@ -196,7 +197,7 @@ const ProductDetails = ({ productId, isHome = false }) => {
               <h2 className="text-2xl font-bold text-center uppercase tracking-tight mb-12">
                 You May Also Like
               </h2>
-              <ProductGrid products={similarProducts || []} />
+              <ProductGrid products={similarProducts} loading= {loading} error= {error}/>
             </div>
           )}
         </div>
