@@ -6,6 +6,12 @@ const productRoutes = require("./routes/productRoutes");
 const cartRoutes = require("./routes/cartRoutes");
 const checkoutRoutes = require("./routes/checkoutRoutes");
 const orderRoutes = require("./routes/orderRoutes");
+const uploadRoutes = require("./routes/uploadRoutes");
+const subscriberRoute = require("./routes/subscriberRoute");
+const adminRoutes = require("./routes/adminRoutes");
+const productAdminRoutes = require("./routes/productAdminRoutes");
+const adminOrderRoutes = require("./routes/adminOrderRoutes");
+
 
 
 dotenv.config();
@@ -31,8 +37,14 @@ app.use("/api/products",productRoutes);
 app.use("/api/cart",cartRoutes);
 app.use("/api/checkout",checkoutRoutes);
 app.use("/api/orders",orderRoutes);
+app.use("/api/upload",uploadRoutes);
+app.use("/api",subscriberRoute);
 
 
+//Admin 
+app.use("/api/admin/users",adminRoutes);
+app.use("/api/admin/products",productAdminRoutes);
+app.use("/api/admin/orders",adminOrderRoutes);
 
 app.listen(PORT,()=>{
     console.log(`Server is running on http://localhost:${PORT}`);
