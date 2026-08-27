@@ -1,42 +1,49 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
+const MAX_PRICE = 500;
+
+const CATEGORIES = ["Perfumes", "NFC Keychains", "Posters"];
+
+// Each category exposes a different set of facets. `param` is the query key the
+// backend already understands, so nothing here needs an API change.
+const FACETS = {
+    "Perfumes": [
+        { param: "brand", label: "House", multi: true, options: ["Chanel", "Dior", "Yves Saint Laurent", "Gucci", "Burberry", "Kayali", "Marc Jacobs", "Victoria's Secret", "Lattafa"] },
+        { param: "collection", label: "Scent Family", multi: false, options: ["Floral", "Gourmand", "Oud"] },
+        { param: "material", label: "Concentration", multi: true, options: ["Eau de Parfum", "Eau de Toilette"] },
+        { param: "gender", label: "Wear", multi: false, options: ["Women", "Unisex"] },
+    ],
+    "NFC Keychains": [
+        { param: "brand", label: "Artist", multi: true, options: ["21 Savage", "A$AP Rocky", "A.R. Rahman", "Anirudh Ravichander", "Ankur Tiwari", "Billie Eilish", "Childish Gambino", "Don Toliver", "Drake", "Eminem", "Frank Ocean", "Future", "Joji", "Kanye West", "Ken Carson", "Kendrick Lamar", "Lana Del Rey", "Metro Boomin", "Michael Jackson", "Olivia Rodrigo", "PARTYNEXTDOOR", "Playboi Carti", "Pusha T", "SZA", "Sabrina Carpenter", "Shashwat Sachdev", "Taylor Swift", "The Weeknd", "Tory Lanez", "Travis Scott"] },
+        { param: "collection", label: "Genre", multi: false, options: ["Hip-Hop", "R&B", "Pop", "Alternative", "Indian Cinema"] },
+        { param: "color", label: "Finish", multi: false, options: ["Black", "Silver", "Gold"] },
+    ],
+    "Posters": [
+        { param: "collection", label: "Theme", multi: false, options: ["Album Art", "Anime", "Abstract", "Typography", "Retro", "Film"] },
+        { param: "size", label: "Size", multi: true, options: ["A4", "A3", "A2"] },
+        { param: "material", label: "Finish", multi: true, options: ["Matte Paper", "Glossy", "Canvas"] },
+    ],
+};
+
+const MULTI_PARAMS = ["brand", "material", "size"];
+
 const FilterSidebar = () => {
     const [searchParams, setSearchParams] = useSearchParams();
-    const [filters, setFilters] = useState({
-        category: "",
-        gender: "",
-        color: "",
-        size: [],
-        material: [],
-        brand: [],
-        minPrice: 0,
-        maxPrice: 100,
-    });
+    const [filters, setFilters] = useState({});
+    const [priceRange, setPriceRange] = useState([0, MAX_PRICE]);
 
-    const [priceRange, setPriceRange] = useState([0, 100]);
-
-    const categories = ["Top Wear", "Bottom Wear"];
-    const colors = ["Red", "Blue", "Black", "Green", "Yellow", "Gray", "White", "Pink", "Beige", "Navy"];
-    const sizes = ["XS", "S", "M", "L", "XL", "XXL"];
-    const materials = ["Cotton", "Wool", "Denim", "Polyester", "Silk", "Linen", "Viscose", "Fleece"];
-    const genders = ["Men", "Women"];
-    const brands = ["Urban Threads", "Modern Fit", "Street Style", "Beach Breeze", "Fashionista", "ChicStyle"];
+    const activeCategory = filters.category || "";
+    const facets = FACETS[activeCategory] || [];
 
     useEffect(() => {
         const params = Object.fromEntries([...searchParams]);
-        const initialFilters = {
-            category: params.category || "",
-            gender: params.gender || "",
-            color: params.color || "",
-            size: params.size ? params.size.split(",") : [],
-            material: params.material ? params.material.split(",") : [],
-            brand: params.brand ? params.brand.split(",") : [],
-            minPrice: params.minPrice || 0,
-            maxPrice: params.maxPrice || 100,
-        };
-        setFilters(initialFilters);
-        setPriceRange([0, Number(params.maxPrice) || 100]);
+        const next = { ...params };
+        MULTI_PARAMS.forEach((key) => {
+            next[key] = params[key] ? params[key].split(",") : [];
+        });
+        setFilters(next);
+        setPriceRange([0, Number(params.maxPrice) || MAX_PRICE]);
     }, [searchParams]);
 
     const updateURLParams = (newFilters) => {
@@ -52,25 +59,32 @@ const FilterSidebar = () => {
         setSearchParams(params);
     };
 
-    const handleFilterChange = (e) => {
-        const { name, value, checked, type } = e.target;
+    const setValue = (param, value, multi) => {
         let newFilters = { ...filters };
-
-        if (type === "checkbox") {
-            const currentArray = [...(newFilters[name] || [])];
-            if (checked) {
-                currentArray.push(value);
-            } else {
-                const index = currentArray.indexOf(value);
-                if (index > -1) currentArray.splice(index, 1);
-            }
-            newFilters[name] = currentArray;
+        if (multi) {
+            const current = [...(newFilters[param] || [])];
+            const index = current.indexOf(value);
+            if (index > -1) current.splice(index, 1);
+            else current.push(value);
+            newFilters[param] = current;
         } else {
-            newFilters[name] = value;
+            // Clicking the selected option again clears it.
+            newFilters[param] = newFilters[param] === value ? "" : value;
         }
-
         setFilters(newFilters);
         updateURLParams(newFilters);
+    };
+
+    // Switching category drops facets that don't exist on the new one, otherwise
+    // a stale ?brand=Kanye West would silently empty the perfume grid.
+    const handleCategoryChange = (category) => {
+        const next = {
+            category: filters.category === category ? "" : category,
+            minPrice: filters.minPrice,
+            maxPrice: filters.maxPrice,
+        };
+        setFilters(next);
+        updateURLParams(next);
     };
 
     const handlePriceChange = (e) => {
@@ -81,21 +95,42 @@ const FilterSidebar = () => {
         updateURLParams(newFilters);
     };
 
+    const clearAll = () => {
+        setFilters({});
+        setPriceRange([0, MAX_PRICE]);
+        setSearchParams(new URLSearchParams());
+    };
+
+    const hasActiveFilters = Object.keys(filters).some((key) => {
+        const value = filters[key];
+        return Array.isArray(value) ? value.length > 0 : Boolean(value);
+    });
+
     return (
         <div className='p-4'>
-            {/* Title - Refinement: Uppercase and tracking for brand feel */}
-            <h3 className='text-sm font-bold text-gray-900 mb-8 uppercase tracking-widest'>Filters</h3>
+            <div className='flex items-center justify-between mb-8'>
+                <h3 className='text-sm font-bold text-gray-900 uppercase tracking-widest'>Filters</h3>
+                {hasActiveFilters && (
+                    <button
+                        onClick={clearAll}
+                        className='text-[10px] font-bold uppercase tracking-widest text-gray-400 hover:text-black transition-colors cursor-pointer'
+                    >
+                        Clear
+                    </button>
+                )}
+            </div>
 
-            {/* Category Filter */}
+            {/* Category — always shown, and it drives everything below it */}
             <div className='mb-8'>
                 <label className='block text-xs font-semibold uppercase tracking-wider text-gray-800 mb-4'>Category</label>
-                {categories.map((category) => (
+                {CATEGORIES.map((category) => (
                     <div key={category} className='flex items-center mb-2'>
-                        <input 
-                            type="radio" 
-                            name="category" 
-                            value={category} 
-                            onChange={handleFilterChange} 
+                        <input
+                            type="radio"
+                            name="category"
+                            value={category}
+                            onChange={() => handleCategoryChange(category)}
+                            onClick={() => handleCategoryChange(category)}
                             checked={filters.category === category}
                             className='mr-3 h-4 w-4 accent-black cursor-pointer'
                         />
@@ -104,105 +139,50 @@ const FilterSidebar = () => {
                 ))}
             </div>
 
-            {/* Gender Filter */}
-            <div className='mb-8'>
-                <label className='block text-xs font-semibold uppercase tracking-wider text-gray-800 mb-4'>Gender</label>
-                {genders.map((gender) => (
-                    <div key={gender} className='flex items-center mb-2'>
-                        <input 
-                            type="radio" 
-                            name="gender" 
-                            value={gender} 
-                            onChange={handleFilterChange} 
-                            checked={filters.gender === gender}
-                            className='mr-3 h-4 w-4 accent-black cursor-pointer'
-                        />
-                        <span className='text-sm text-gray-600 hover:text-black cursor-pointer transition-colors'>{gender}</span>
+            {/* Facets for the selected category */}
+            {facets.map((facet) => (
+                <div key={facet.param} className='mb-8'>
+                    <label className='block text-xs font-semibold uppercase tracking-wider text-gray-800 mb-4'>
+                        {facet.label}
+                    </label>
+                    <div className={facet.options.length > 12 ? "max-h-56 overflow-y-auto pr-2" : ""}>
+                        {facet.options.map((option) => {
+                            const selected = facet.multi
+                                ? (filters[facet.param] || []).includes(option)
+                                : filters[facet.param] === option;
+                            return (
+                                <div key={option} className='flex items-center mb-2'>
+                                    <input
+                                        type={facet.multi ? "checkbox" : "radio"}
+                                        name={facet.param}
+                                        value={option}
+                                        onChange={() => setValue(facet.param, option, facet.multi)}
+                                        onClick={() => !facet.multi && setValue(facet.param, option, false)}
+                                        checked={selected}
+                                        className='mr-3 h-4 w-4 accent-black cursor-pointer'
+                                    />
+                                    <span className='text-sm text-gray-600'>{option}</span>
+                                </div>
+                            );
+                        })}
                     </div>
-                ))}
-            </div>
-
-            {/* Color Filter */}
-            <div className='mb-8'>
-                <label className='block text-xs font-semibold uppercase tracking-wider text-gray-800 mb-4'>Color</label>
-                <div className='flex flex-wrap gap-3'>
-                    {colors.map((color) => (
-                        <button 
-                            key={color} 
-                            type="button"
-                            onClick={() => handleFilterChange({ target: { name: 'color', value: color, type: 'button' } })}
-                            className={`w-7 h-7 rounded-full border border-gray-200 transition-all ${filters.color === color ? "ring-2 ring-black ring-offset-2" : "hover:scale-110"}`} 
-                            style={{ backgroundColor: color.toLowerCase() }}
-                            title={color}
-                        ></button>
-                    ))}
                 </div>
-            </div>
+            ))}
 
-            {/* Size Filter */}
-            <div className='mb-8'>
-                <label className='block text-xs font-semibold uppercase tracking-wider text-gray-800 mb-4'>Size</label>
-                <div className="grid grid-cols-2 gap-2">
-                    {sizes.map((size) => (
-                        <div key={size} className='flex items-center'>
-                            <input 
-                                type="checkbox" 
-                                name="size" 
-                                value={size} 
-                                onChange={handleFilterChange} 
-                                checked={filters.size.includes(size)}
-                                className='mr-3 h-4 w-4 accent-black cursor-pointer rounded'
-                            />
-                            <span className='text-sm text-gray-600'>{size}</span>
-                        </div>
-                    ))}
-                </div>
-            </div>
+            {!activeCategory && (
+                <p className='mb-8 text-xs text-gray-400 leading-relaxed'>
+                    Pick a category to filter by artist, scent family, finish and more.
+                </p>
+            )}
 
-            {/* Material Filter */}
-            <div className='mb-8'>
-                <label className='block text-xs font-semibold uppercase tracking-wider text-gray-800 mb-4'>Material</label>
-                {materials.map((material) => (
-                    <div key={material} className='flex items-center mb-2'>
-                        <input 
-                            type="checkbox" 
-                            name="material" 
-                            value={material} 
-                            onChange={handleFilterChange} 
-                            checked={filters.material.includes(material)}
-                            className='mr-3 h-4 w-4 accent-black cursor-pointer rounded'
-                        />
-                        <span className='text-sm text-gray-600'>{material}</span>
-                    </div>
-                ))}
-            </div>
-
-            {/* Brand Filter */}
-            <div className='mb-8'>
-                <label className='block text-xs font-semibold uppercase tracking-wider text-gray-800 mb-4'>Brand</label>
-                {brands.map((brand) => (
-                    <div key={brand} className='flex items-center mb-2'>
-                        <input 
-                            type="checkbox" 
-                            name="brand" 
-                            value={brand} 
-                            onChange={handleFilterChange} 
-                            checked={filters.brand.includes(brand)}
-                            className='mr-3 h-4 w-4 accent-black cursor-pointer rounded'
-                        />
-                        <span className='text-sm text-gray-600'>{brand}</span>
-                    </div>
-                ))}
-            </div>
-
-            {/* Price Range Filter */}
+            {/* Price Range */}
             <div className='mb-8'>
                 <label className='block text-xs font-semibold uppercase tracking-wider text-gray-800 mb-4'>Price Range</label>
-                <input 
-                    type="range" 
-                    name="priceRange" 
-                    min={0} 
-                    max={100} 
+                <input
+                    type="range"
+                    name="priceRange"
+                    min={0}
+                    max={MAX_PRICE}
                     value={priceRange[1]}
                     onChange={handlePriceChange}
                     className='w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-black'

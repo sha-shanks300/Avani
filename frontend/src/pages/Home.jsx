@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Hero from '../components/Layout/Hero';
-import GenderCollectionSection from '../components/Products/GenderCollectionSection';
+import CategoryCollectionSection from '../components/Products/CategoryCollectionSection';
 import NewArrivals from '../components/Products/NewArrivals';
 import ProductDetails from '../components/Products/ProductDetails';
 import ProductGrid from '../components/Products/ProductGrid';
@@ -43,7 +43,7 @@ const Home = () => {
     
     <div className="space-y-12 md:space-y-20">
       <Hero />
-      <GenderCollectionSection />
+      <CategoryCollectionSection />
       <NewArrivals />
 
       {/* Best Seller Section */}
