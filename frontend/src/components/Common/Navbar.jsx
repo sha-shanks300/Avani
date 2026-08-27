@@ -40,22 +40,16 @@ const Navbar = () => {
 
                 {/* Center - Navigation (Desktop) */}
                 <div className="hidden md:flex space-x-8">
-                    <Link to="/collections/all?gender=Men" className="text-gray-700 hover:text-black text-xs font-bold uppercase tracking-widest transition-colors">
+                    <Link to="/collections/all?category=Perfumes" className="text-gray-700 hover:text-black text-xs font-bold uppercase tracking-widest transition-colors">
                         Perfumes
                     </Link>
-                    <Link to="/collections/all?gender=Women" className="text-gray-700 hover:text-black text-xs font-bold uppercase tracking-widest transition-colors">
+                    <Link to="/collections/all?category=NFC%20Keychains" className="text-gray-700 hover:text-black text-xs font-bold uppercase tracking-widest transition-colors">
                         NFC Keychains
                     </Link>
-                    <Link to="#" className="text-gray-700 hover:text-black text-xs font-bold uppercase tracking-widest transition-colors">
+                    <Link to="/collections/all?category=Posters" className="text-gray-700 hover:text-black text-xs font-bold uppercase tracking-widest transition-colors">
                         Posters
                     </Link>
-                    {/* 
-                    <Link to="#" className="text-gray-700 hover:text-black text-xs font-bold uppercase tracking-widest transition-colors">
-                        Bottom Wear
-                    </Link>
-                    
-                    */}
-                    
+
                 </div>
 
                 {/* Right - Icons */}
@@ -102,10 +96,10 @@ const Navbar = () => {
                 
                 <nav className="flex flex-col space-y-6">
                     <h2 className="text-xl font-bold uppercase tracking-widest mb-4">Menu</h2>
-                    <Link to="/collections/all?gender=Men" onClick={toggleNavDrawer} className="text-sm font-semibold uppercase tracking-wider text-gray-600">Men</Link>
-                    <Link to="/collections/all?gender=Women" onClick={toggleNavDrawer} className="text-sm font-semibold uppercase tracking-wider text-gray-600">Women</Link>
-                    <Link to="#" onClick={toggleNavDrawer} className="text-sm font-semibold uppercase tracking-wider text-gray-600">Top Wear</Link>
-                    <Link to="#" onClick={toggleNavDrawer} className="text-sm font-semibold uppercase tracking-wider text-gray-600">Bottom Wear</Link>
+                    <Link to="/collections/all?category=Perfumes" onClick={toggleNavDrawer} className="text-sm font-semibold uppercase tracking-wider text-gray-600">Perfumes</Link>
+                    <Link to="/collections/all?category=NFC%20Keychains" onClick={toggleNavDrawer} className="text-sm font-semibold uppercase tracking-wider text-gray-600">NFC Keychains</Link>
+                    <Link to="/collections/all?category=Posters" onClick={toggleNavDrawer} className="text-sm font-semibold uppercase tracking-wider text-gray-600">Posters</Link>
+                    <Link to="/collections/all" onClick={toggleNavDrawer} className="text-sm font-semibold uppercase tracking-wider text-gray-600">Shop All</Link>
                 </nav>
             </div>
 
