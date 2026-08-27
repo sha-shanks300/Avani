@@ -22,8 +22,8 @@ const Hero = () => {
                   Craft your identity with premium fragrances, NFC keychains, and curated posters.
               </p>
               {/* Refinement: Professional button with hover transition and weight */}
-              <Link 
-                to="#" 
+              <Link
+                to="/collections/all" 
                 className="inline-block bg-white text-gray-950 px-8 py-3 rounded-none font-medium hover:bg-gray-100 transition-colors duration-300 uppercase text-sm tracking-widest"
               >
                 Shop Now

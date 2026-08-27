@@ -43,7 +43,7 @@ const Login = () => {
                 <form onSubmit={handleSubmit} className='w-full max-w-md'>
                     <div className='flex justify-center mb-6'>
                         {/* Refinement: Using uppercase and tracking for the logo text */}
-                        <h2 className='text-2xl font-bold uppercase tracking-widest'>Rabbit</h2>
+                        <h2 className='text-2xl font-bold uppercase tracking-widest'>Avani</h2>
                     </div>
                     
                     <h2 className='text-2xl font-bold text-center mb-2 uppercase tracking-tight'>Hey there! 👋</h2>

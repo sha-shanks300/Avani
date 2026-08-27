@@ -44,12 +44,12 @@ const Register = () => {
             <div className='w-full md:w-1/2 flex flex-col justify-center items-center p-8 md:p-12 bg-white'>
                 <form onSubmit={handleSubmit} className='w-full max-w-md'>
                     <div className='flex justify-center mb-6'>
-                        <h2 className='text-2xl font-bold uppercase tracking-widest'>Rabbit</h2>
+                        <h2 className='text-2xl font-bold uppercase tracking-widest'>Avani</h2>
                     </div>
                     
                     <h2 className='text-2xl font-bold text-center mb-2 uppercase tracking-tight'>Create an Account</h2>
                     <p className='text-center text-gray-500 mb-8'>
-                        Enter your details to join the Rabbit community
+                        Enter your details to join the Avani community
                     </p>
 
                     <div className='mb-4'>
@@ -109,7 +109,7 @@ const Register = () => {
                 <div className='h-full'>
                     <img 
                         src={register} 
-                        alt="Join Rabbit" 
+                        alt="Join Avani" 
                         className='h-full w-full object-cover'
                     />
                 </div>

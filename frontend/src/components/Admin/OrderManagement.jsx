@@ -49,7 +49,7 @@ const OrderManagement = () => {
                                 <tr key={order._id} className='hover:bg-gray-50 transition-colors'>
                                     <td className='py-4 px-6 font-mono text-gray-600'>#{order._id}</td>
                                     <td className='py-4 px-6 font-medium text-gray-900'>{order.user?.name || "N/A"}</td>
-                                    <td className='py-4 px-6'>${Number(order.totalPrice || 0).toFixed(2)}</td>
+                                    <td className='py-4 px-6'>₹{Number(order.totalPrice || 0).toFixed(2)}</td>
                                     <td className='py-4 px-6'>
                                         <select 
                                             value={order.status}

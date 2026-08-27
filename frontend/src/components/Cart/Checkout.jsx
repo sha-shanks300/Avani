@@ -237,10 +237,10 @@ const Checkout = () => {
                 <img src={product.image} alt={product.name} className="w-16 h-20 object-cover rounded-none border border-gray-100 mr-4" />
                 <div>
                   <h4 className="text-sm font-bold text-gray-900 uppercase tracking-tight">{product.name}</h4>
-                  <p className="text-xs text-gray-500 uppercase mt-1">Size: {product.size} | Color: {product.color}</p>
+                  <p className="text-xs text-gray-500 uppercase mt-1">{[product.size, product.color].filter(Boolean).join(" · ")}</p>
                 </div>
               </div>
-              <p className="text-sm font-bold text-gray-900">${product.price}</p>
+              <p className="text-sm font-bold text-gray-900">₹{product.price}</p>
             </div>
           ))}
         </div>
@@ -249,7 +249,7 @@ const Checkout = () => {
         <div className="mt-10 pt-6 border-t border-gray-200 space-y-3">
           <div className="flex justify-between text-xs uppercase tracking-widest text-gray-500">
             <span>Subtotal</span>
-            <span className="text-gray-900 font-bold">${cart.totalPrice}</span>
+            <span className="text-gray-900 font-bold">₹{cart.totalPrice}</span>
           </div>
           <div className="flex justify-between text-xs uppercase tracking-widest text-gray-500">
             <span>Shipping</span>
@@ -257,7 +257,7 @@ const Checkout = () => {
           </div>
           <div className="flex justify-between items-center text-xl font-bold text-gray-900 pt-6 border-t border-gray-200 mt-6">
             <span className="uppercase tracking-tighter">Total</span>
-            <span>${cart.totalPrice}</span>
+            <span>₹{cart.totalPrice}</span>
           </div>
         </div>
       </div>

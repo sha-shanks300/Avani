@@ -67,7 +67,7 @@ const MyOrderPage = () => {
                                         {order.orderItems?.length || 0}
                                     </td>
                                     <td className='py-4 px-4 font-medium'>
-                                        ${order.totalPrice}
+                                        ₹{order.totalPrice}
                                     </td>
                                     <td className='py-4 px-4'>
                                         <span className={`inline-block px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-none ${order.isPaid ? "bg-gray-100 text-gray-800" : "bg-red-50 text-red-700"}`}>

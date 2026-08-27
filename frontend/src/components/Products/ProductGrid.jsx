@@ -28,7 +28,7 @@ const ProductGrid = ({ products, loading, error }) => {
                         {product.name}
                     </h3>
                     <p className='text-gray-500 font-medium text-sm'>
-                        ${product.price}
+                        ₹{product.price}
                     </p>
                 </div>
             </Link>
