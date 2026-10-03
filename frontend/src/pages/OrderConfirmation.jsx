@@ -80,11 +80,11 @@ const OrderConfirmation = () => {
                 <div>
                   <h4 className="text-sm font-bold text-gray-900 uppercase tracking-wider">{item.name}</h4>
                   <p className="text-xs text-gray-500 mt-1 uppercase tracking-tighter">
-                    Size: {item.size} | Color: {item.color} | Qty: {item.quantity}
+                    {[item.size, item.color, `Qty: ${item.quantity}`].filter(Boolean).join(" · ")}
                   </p>
                 </div>
               </div>
-              <p className="text-sm font-bold text-gray-900">${item.price * item.quantity}</p>
+              <p className="text-sm font-bold text-gray-900">₹{item.price * item.quantity}</p>
             </div>
           ))}
         </div>
@@ -102,7 +102,7 @@ const OrderConfirmation = () => {
           <div className="space-y-4">
             <div className="flex justify-between text-xs uppercase tracking-widest text-gray-500">
               <span>Subtotal</span>
-              <span className="text-gray-900 font-bold">${calculateTotal()}</span>
+              <span className="text-gray-900 font-bold">₹{calculateTotal()}</span>
             </div>
             <div className="flex justify-between text-xs uppercase tracking-widest text-gray-500">
               <span>Shipping</span>
@@ -110,7 +110,7 @@ const OrderConfirmation = () => {
             </div>
             <div className="flex justify-between items-center text-xl font-bold text-gray-900 pt-6 border-t border-gray-100">
               <span className="uppercase tracking-tighter">Total</span>
-              <span>${calculateTotal()}</span>
+              <span>₹{calculateTotal()}</span>
             </div>
           </div>
         </div>

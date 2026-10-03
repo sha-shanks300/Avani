@@ -43,7 +43,7 @@ const CartContents = ({cart, userId, guestId}) => {
                 {product.name}
               </h3>
               <p className="text-xs text-gray-500 uppercase tracking-tighter mt-1">
-                Size: {product.size} | Color: {product.color}
+                {[product.size, product.color].filter(Boolean).join(" · ")}
               </p>
               
               {/* Refinement: Unified quantity selector style */}
@@ -60,7 +60,7 @@ const CartContents = ({cart, userId, guestId}) => {
           </div>
           
           <div className="text-right">
-            <p className="text-sm font-bold text-gray-900">${product.price}</p>
+            <p className="text-sm font-bold text-gray-900">₹{product.price}</p>
             <button onClick={() => handleRemoveFromCart(product.productId, product.size, product.color)} className="mt-4 text-gray-400 hover:text-red-600 transition-colors cursor-pointer">
               <RiDeleteBin3Line className="h-5 w-5" />
             </button>

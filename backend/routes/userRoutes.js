@@ -38,6 +38,12 @@ router.post("/register", async(req,res) => {
         });
 
     }catch(error){
+        // Bad input (e.g. a short password) is the user's to fix: tell them
+        // what and which field, instead of a generic 500.
+        if (error.name === "ValidationError") {
+            const [field, fieldError] = Object.entries(error.errors)[0];
+            return res.status(400).json({ message: fieldError.message, field });
+        }
         console.log(error);
         res.status(500).send("Server Error");
     }
@@ -54,10 +60,10 @@ router.post("/login", async(req,res) => {
         //Find the user by email
         let user = await User.findOne({email});
 
-        if (!user) return res.status(400).json({message: "Invalid Credentials"});
+        if (!user) return res.status(400).json({message: "Email or password is incorrect."});
         const isMatch = await user.matchPassword(password)
 
-        if (!isMatch) return res.status(400).json({message: "Invalid Credentials"});
+        if (!isMatch) return res.status(400).json({message: "Email or password is incorrect."});
 
         // Create JWT
         const payload = {user: {id: user._id, role: user.role }}

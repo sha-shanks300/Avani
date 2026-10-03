@@ -17,11 +17,12 @@ const SortOptions = () => {
     };
 
     return (
-        <div className="mb-6 flex items-center justify-end">
+        <div className="flex items-center justify-end">
             <div className="relative">
                 {/* Refinement: Added a subtle label or adjusted styling for a premium feel */}
                 <select
                     id="sort"
+                    aria-label="Sort products"
                     onChange={handleSortChange}
                     value={searchParams.get("sortBy") || ""}
                     className="appearance-none bg-white border border-gray-300 text-gray-700 py-2 pl-4 pr-10 rounded-none text-sm focus:outline-none focus:border-black cursor-pointer transition-colors"

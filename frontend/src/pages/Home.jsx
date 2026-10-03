@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Hero from '../components/Layout/Hero';
-import GenderCollectionSection from '../components/Products/GenderCollectionSection';
+import CategoryCollectionSection from '../components/Products/CategoryCollectionSection';
 import NewArrivals from '../components/Products/NewArrivals';
 import ProductDetails from '../components/Products/ProductDetails';
 import ProductGrid from '../components/Products/ProductGrid';
@@ -20,8 +20,7 @@ const Home = () => {
     //fetch products for a specific collection
     dispatch(
       fetchProductsByFilters({
-        gender: "Women",
-        category: "Bottom Wear",
+        category: "Perfumes",
         limit: 8,
       })
     );
@@ -44,7 +43,7 @@ const Home = () => {
     
     <div className="space-y-12 md:space-y-20">
       <Hero />
-      <GenderCollectionSection />
+      <CategoryCollectionSection />
       <NewArrivals />
 
       {/* Best Seller Section */}
@@ -58,10 +57,10 @@ const Home = () => {
         )}
       </section>
 
-      {/* Top Wears Section */}
+      {/* Fragrance Section */}
       <section className='container mx-auto px-4 lg:px-8'>
         <h2 className='text-3xl font-bold text-center mb-10 uppercase tracking-tight'>
-          Top Wears for Women
+          Signature Fragrances
         </h2>
         <ProductGrid products={products} loading={loading} error={error} />
       </section>

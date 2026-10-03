@@ -12,8 +12,10 @@ const Checkout = () => {
   const dispatch = useDispatch();
   const {cart, loading, error} = useSelector((state) => state.cart);
   const {user} = useSelector((state) => state.auth);
+  const {loading: checkoutLoading, error: checkoutError} = useSelector((state) => state.checkout);
 
   const [checkoutId, setCheckoutId] = useState(null);
+  const [paymentError, setPaymentError] = useState(null);
 
   const [shippingAddress, setShippingAddress] = useState({
     firstName: "",
@@ -21,7 +23,7 @@ const Checkout = () => {
     address: "",
     city: "",
     postalCode: "",
-    country: "",
+    country: "India",
     phone: "",
   });
 
@@ -68,6 +70,11 @@ const Checkout = () => {
     
     } catch (error) {
       console.error(error);
+      // PayPal has already captured the money at this point, so a retry would
+      // charge twice. Point the shopper at the transaction instead.
+      setPaymentError(
+        `Your payment went through, but we couldn't record the order. Don't pay again. Contact us with PayPal transaction ${details?.id || "ID from your receipt"}.`
+      );
     }
   };
 
@@ -84,7 +91,9 @@ const Checkout = () => {
       );
       navigate("/order-confirmation");
     } catch (error) {
+      // Let handlePaymentSuccess show the "don't pay again" message.
       console.error(error);
+      throw error;
     }
   };
   if (loading){
@@ -189,6 +198,19 @@ const Checkout = () => {
             </div>
 
             <div className="mt-4">
+              <label className="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">Country</label>
+              <input
+                type="text"
+                name="country"
+                value={shippingAddress.country}
+                onChange={handleInputChange}
+                className={`w-full p-3 border rounded-none transition-colors ${checkoutId ? 'bg-gray-50 border-gray-100 text-gray-400' : 'border-gray-200 focus:border-black'}`}
+                required
+                disabled={!!checkoutId}
+              />
+            </div>
+
+            <div className="mt-4">
               <label className="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-2">Phone Number</label>
               <input
                 type="tel"
@@ -205,20 +227,34 @@ const Checkout = () => {
           {/* Action Area */}
           <div className="pt-6 border-t border-gray-100">
             {!checkoutId ? (
-              <button
-                type="submit"
-                className="w-full bg-black text-white py-4 rounded-none font-bold uppercase tracking-widest hover:bg-gray-800 transition-all duration-300"
-              >
-                Continue to Payment
-              </button>
+              <>
+                <button
+                  type="submit"
+                  disabled={checkoutLoading}
+                  className="w-full bg-black text-white py-4 rounded-none font-bold uppercase tracking-widest hover:bg-gray-800 transition-all duration-300 cursor-pointer disabled:opacity-60 disabled:cursor-wait"
+                >
+                  {checkoutLoading ? "Saving details…" : "Continue to Payment"}
+                </button>
+                {checkoutError && (
+                  <p role="alert" className="mt-4 text-sm text-red-600">
+                    Couldn't continue to payment: {checkoutError}
+                  </p>
+                )}
+              </>
             ) : (
               <div className="space-y-4">
                 <h3 className="text-xs font-bold uppercase tracking-widest text-gray-900">Pay with PayPal</h3>
                 <PayPalButton 
                   amount={cart.totalPrice} 
                   onSuccess={handlePaymentSuccess} 
-                  onError={() => alert("Payment failed. Try again.")}
+                  onError={(err) => {
+                    console.error(err);
+                    setPaymentError("PayPal couldn't complete the payment. You haven't been charged, so you can try again.");
+                  }}
                 />
+                {paymentError && (
+                  <p role="alert" className="text-sm text-red-600">{paymentError}</p>
+                )}
               </div>
             )}
           </div>
@@ -237,10 +273,10 @@ const Checkout = () => {
                 <img src={product.image} alt={product.name} className="w-16 h-20 object-cover rounded-none border border-gray-100 mr-4" />
                 <div>
                   <h4 className="text-sm font-bold text-gray-900 uppercase tracking-tight">{product.name}</h4>
-                  <p className="text-xs text-gray-500 uppercase mt-1">Size: {product.size} | Color: {product.color}</p>
+                  <p className="text-xs text-gray-500 uppercase mt-1">{[product.size, product.color].filter(Boolean).join(" · ")}</p>
                 </div>
               </div>
-              <p className="text-sm font-bold text-gray-900">${product.price}</p>
+              <p className="text-sm font-bold text-gray-900">₹{product.price}</p>
             </div>
           ))}
         </div>
@@ -249,7 +285,7 @@ const Checkout = () => {
         <div className="mt-10 pt-6 border-t border-gray-200 space-y-3">
           <div className="flex justify-between text-xs uppercase tracking-widest text-gray-500">
             <span>Subtotal</span>
-            <span className="text-gray-900 font-bold">${cart.totalPrice}</span>
+            <span className="text-gray-900 font-bold">₹{cart.totalPrice}</span>
           </div>
           <div className="flex justify-between text-xs uppercase tracking-widest text-gray-500">
             <span>Shipping</span>
@@ -257,7 +293,7 @@ const Checkout = () => {
           </div>
           <div className="flex justify-between items-center text-xl font-bold text-gray-900 pt-6 border-t border-gray-200 mt-6">
             <span className="uppercase tracking-tighter">Total</span>
-            <span>${cart.totalPrice}</span>
+            <span>₹{cart.totalPrice}</span>
           </div>
         </div>
       </div>

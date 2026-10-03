@@ -13,6 +13,16 @@ const saveCartToStorage = (cart) => {
     localStorage.setItem("cart",JSON.stringify(cart));
 };
 
+// The server no longer has a cart for this user/guest (e.g. the DB was
+// reseeded), so whatever is cached locally is stale and can't be edited.
+const resetCart = (state) => {
+    state.cart = {products: []};
+    localStorage.removeItem("cart");
+};
+
+const isMissingCart = (payload) =>
+    payload?.status === 404 && payload?.message?.toLowerCase() === "cart not found";
+
 // Fetch cart for a user or guest
 export const fetchCart = createAsyncThunk("cart/fetchCart", async({userId, guestId},{rejectWithValue})=>{
     try {
@@ -22,7 +32,7 @@ export const fetchCart = createAsyncThunk("cart/fetchCart", async({userId, guest
         return response.data;
     } catch (error) {
         console.error(error);
-        return rejectWithValue(error.response?.data);
+        return rejectWithValue({ ...error.response?.data, status: error.response?.status });
     }
 });
 
@@ -41,7 +51,7 @@ export const addToCart = createAsyncThunk("cart/addToCart", async ({productId, q
         );
         return response.data;
     } catch (error) {
-        return rejectWithValue(error.response?.data);
+        return rejectWithValue({ ...error.response?.data, status: error.response?.status });
     }
 })
 
@@ -60,7 +70,7 @@ export const updateCartItemQuantity = createAsyncThunk(
             });
             return response.data;
         } catch (error) {
-            return rejectWithValue(error.response?.data);
+            return rejectWithValue({ ...error.response?.data, status: error.response?.status });
         }
     }
 );
@@ -75,7 +85,7 @@ export const removeFromCart = createAsyncThunk("cart/removeFromCart", async({pro
         })
         return response.data;
     } catch (error) {
-        return rejectWithValue(error.response?.data);
+        return rejectWithValue({ ...error.response?.data, status: error.response?.status });
     }
 });
 
@@ -93,7 +103,7 @@ export const mergeCart = createAsyncThunk("cart/mergeCart", async({userId,guestI
         );
         return response.data;
     } catch (error) {
-        return rejectWithValue(error.response?.data);
+        return rejectWithValue({ ...error.response?.data, status: error.response?.status });
     }
 });
 
@@ -123,6 +133,11 @@ const cartSlice = createSlice({
         })
         .addCase(fetchCart.rejected, (state, action) => {
             state.loading = false;
+            // No cart on the server is normal for a new visitor, not an error.
+            if (action.payload?.status === 404) {
+                resetCart(state);
+                return;
+            }
             state.error = action.payload?.message || "Failed to fetch cart";
         })
         .addCase(addToCart.pending, (state) => {
@@ -149,6 +164,10 @@ const cartSlice = createSlice({
         })
         .addCase(updateCartItemQuantity.rejected, (state, action) => {
             state.loading = false;
+            if (isMissingCart(action.payload)) {
+                resetCart(state);
+                return;
+            }
             state.error = action.payload?.message || "Failed to update item quantity";
         })
         .addCase(removeFromCart.pending, (state) => {
@@ -162,6 +181,20 @@ const cartSlice = createSlice({
         })
         .addCase(removeFromCart.rejected, (state, action) => {
             state.loading = false;
+            if (isMissingCart(action.payload)) {
+                resetCart(state);
+                return;
+            }
+            // The server cart exists but doesn't hold this item, so the local
+            // copy is out of date: drop the item here too.
+            if (action.payload?.status === 404) {
+                const { productId, size, color } = action.meta.arg;
+                state.cart.products = state.cart.products.filter(
+                    (p) => !(p.productId === productId && p.size === size && p.color === color)
+                );
+                saveCartToStorage(state.cart);
+                return;
+            }
             state.error = action.payload?.message || "Failed to remove item";
         })
         .addCase(mergeCart.pending, (state) => {

@@ -37,6 +37,11 @@ const ProductDetails = ({ productId, isHome = false }) => {
     if (selectedProduct?.images?.length > 0) {
       setMainImage(selectedProduct.images[0].url);
     }
+    // Fixed-size products (20ml perfumes) render as a spec, not a picker, so
+    // preselect it or the cart line would lose the size.
+    if (selectedProduct?.sizes?.length === 1) {
+      setSelectedSize(selectedProduct.sizes[0]);
+    }
   }, [selectedProduct]);
 
   const handleQuantityChange = (action) => {
@@ -44,9 +49,18 @@ const ProductDetails = ({ productId, isHome = false }) => {
     if (action === "minus" && quantity > 1) setQuantity((prev) => prev - 1);
   };
 
+  // Only enforce an option if this product actually offers one. Keychains have
+  // no size, perfumes and posters have no colour.
+  const sizeOptions = selectedProduct?.sizes || [];
+  const colorOptions = selectedProduct?.colors || [];
+
   const handleAddToCart = () => {
-    if (!selectedSize || !selectedColor) {
-      toast.error("Please select a size and color.", { duration: 1500 });
+    if (sizeOptions.length > 0 && !selectedSize) {
+      toast.error("Please select a size.", { duration: 1500 });
+      return;
+    }
+    if (colorOptions.length > 0 && !selectedColor) {
+      toast.error("Please select a finish.", { duration: 1500 });
       return;
     }
     setIsButtonDisabled(true);
@@ -113,11 +127,11 @@ const ProductDetails = ({ productId, isHome = false }) => {
 
               <div className="flex items-center space-x-3 mb-6">
                 <span className="text-2xl font-medium text-gray-900">
-                  $ {selectedProduct.price}
+                  ₹{selectedProduct.price}
                 </span>
-                {selectedProduct.originalPrice && (
+                {selectedProduct.discountPrice > selectedProduct.price && (
                   <span className="text-lg text-gray-400 line-through">
-                    $ {selectedProduct.originalPrice}
+                    ₹{selectedProduct.discountPrice}
                   </span>
                 )}
               </div>
@@ -127,38 +141,53 @@ const ProductDetails = ({ productId, isHome = false }) => {
               </p>
 
               {/* Attribute Selectors... (rest of your existing logic) */}
-              <div className="mb-6">
-                <p className="text-xs font-bold uppercase tracking-widest text-gray-900 mb-4">
-                  Color
-                </p>
-                <div className="flex gap-3">
-                  {selectedProduct.colors.map((color) => (
-                    <button
-                      key={color}
-                      className={`w-8 h-8 rounded-full border transition-all ${selectedColor === color ? "ring-2 ring-black ring-offset-2" : "border-gray-200"}`}
-                      style={{ backgroundColor: color.toLowerCase() }}
-                      onClick={() => setSelectedColor(color)}
-                    />
-                  ))}
+              {colorOptions.length > 0 && (
+                <div className="mb-6">
+                  <p className="text-xs font-bold uppercase tracking-widest text-gray-900 mb-4">
+                    Finish
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {colorOptions.map((color) => (
+                      <button
+                        key={color}
+                        className={`px-4 h-10 border text-sm transition-all ${selectedColor === color ? "bg-black text-white border-black" : "border-gray-200 text-gray-600 hover:border-black"}`}
+                        onClick={() => setSelectedColor(color)}
+                      >
+                        {color}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
-              <div className="mb-6">
-                <p className="text-xs font-bold uppercase tracking-widest text-gray-900 mb-4">
-                  Size
-                </p>
-                <div className="flex gap-2">
-                  {selectedProduct.sizes.map((size) => (
-                    <button
-                      key={size}
-                      className={`w-12 h-12 flex items-center justify-center border text-sm transition-all ${selectedSize === size ? "bg-black text-white border-black" : "border-gray-200 text-gray-600 hover:border-black"}`}
-                      onClick={() => setSelectedSize(size)}
-                    >
-                      {size}
-                    </button>
-                  ))}
+              {/* A single option isn't a choice — show it as a spec instead. */}
+              {sizeOptions.length === 1 && (
+                <div className="mb-6">
+                  <p className="text-xs font-bold uppercase tracking-widest text-gray-900 mb-2">
+                    Size
+                  </p>
+                  <p className="text-sm text-gray-600">{sizeOptions[0]}</p>
                 </div>
-              </div>
+              )}
+
+              {sizeOptions.length > 1 && (
+                <div className="mb-6">
+                  <p className="text-xs font-bold uppercase tracking-widest text-gray-900 mb-4">
+                    Size
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {sizeOptions.map((size) => (
+                      <button
+                        key={size}
+                        className={`min-w-12 px-3 h-12 flex items-center justify-center border text-sm transition-all ${selectedSize === size ? "bg-black text-white border-black" : "border-gray-200 text-gray-600 hover:border-black"}`}
+                        onClick={() => setSelectedSize(size)}
+                      >
+                        {size}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               <div className="mb-8">
                 <p className="text-xs font-bold uppercase tracking-widest text-gray-900 mb-4">

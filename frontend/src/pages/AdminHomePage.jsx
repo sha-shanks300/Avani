@@ -30,7 +30,7 @@ const AdminHomePage = () => {
                         {/* Revenue Card */}
                         <div className='p-6 bg-white border border-gray-200'>
                             <h2 className='text-xs font-bold uppercase tracking-widest text-gray-500 mb-2'>Revenue</h2>
-                            <p className='text-3xl font-bold text-gray-900'>${(totalSales || 0).toFixed(2)}</p>
+                            <p className='text-3xl font-bold text-gray-900'>₹{(totalSales || 0).toFixed(2)}</p>
                         </div>
 
                         {/* Orders Card */}
@@ -71,7 +71,7 @@ const AdminHomePage = () => {
                                             <tr key={order._id} className='hover:bg-gray-50 transition-colors'>
                                                 <td className='py-4 px-6 text-sm font-mono text-gray-600'>#{order._id}</td>
                                                 <td className='py-4 px-6 text-sm font-medium text-gray-900'>{order.user?.name || "N/A"}</td>
-                                                <td className='py-4 px-6 text-sm text-gray-700'>${Number(order.totalPrice || 0).toFixed(2)}</td>
+                                                <td className='py-4 px-6 text-sm text-gray-700'>₹{Number(order.totalPrice || 0).toFixed(2)}</td>
                                                 <td className='py-4 px-6'>
                                                     <span className='inline-flex items-center bg-gray-100 text-gray-800 px-3 py-1 text-xs font-bold uppercase tracking-tighter'>
                                                         {order.status}

@@ -33,6 +33,11 @@ router.post("/", protect, async (req, res) => {
         res.status(201).json(newCheckout);
     } catch (error) {
         console.error("Error creating checkout session:", error);
+        // Missing/invalid fields are the client's to fix, so say which ones.
+        if (error.name === "ValidationError") {
+            const fields = Object.keys(error.errors).map((key) => key.split(".").pop());
+            return res.status(400).json({ message: `Missing or invalid: ${fields.join(", ")}` });
+        }
         res.status(500).json({ message: "Server Error" });
     }
 });

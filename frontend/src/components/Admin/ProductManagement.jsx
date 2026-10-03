@@ -44,7 +44,7 @@ const ProductManagement = () => {
                                         {product.name}
                                     </td>
                                     <td className='px-6 py-4 text-sm text-gray-600 font-medium'>
-                                        ${product.price}
+                                        ₹{product.price}
                                     </td>
                                     <td className='px-6 py-4 text-sm font-mono text-gray-500'>
                                         {product.sku}

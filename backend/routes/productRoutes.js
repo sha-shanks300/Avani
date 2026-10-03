@@ -180,26 +180,34 @@ router.get("/", async (req, res) => {
       query.category = category;
     }
 
+    // The sidebar sends multi-select facets as a pipe-joined list (artist names
+    // like "Tyler, The Creator" contain commas), so match
+    // any of them rather than the literal "A,B" string.
+    const anyOf = (value) => {
+      const values = String(value).split("|").map((v) => v.trim()).filter(Boolean);
+      return values.length > 1 ? { $in: values } : values[0];
+    };
+
     if (material && material.toLowerCase() !== "all") {
-      query.material = material;
+      query.material = anyOf(material);
     }
 
     if (brand && brand.toLowerCase() !== "all") {
-      query.brand = brand;
+      query.brand = anyOf(brand);
     }
 
     if (gender && gender.toLowerCase() !== "all") {
       query.gender = gender;
     }
 
-    // Size filter 
+    // Size filter
     if (size) {
-      query.sizes = size;
+      query.sizes = anyOf(size);
     }
 
-    // Color filter 
+    // Color filter
     if (color) {
-      query.colors = color;
+      query.colors = anyOf(color);
     }
 
     // Price range filter ($gte = greater than or equal, $lte = less than or equal)

@@ -14,7 +14,7 @@ const FeatureSection = () => {
                     Free International Shipping
                 </h4>
                 <p className='text-gray-500 text-xs tracking-wide uppercase'>
-                    On all orders over $100.00
+                    On all orders over ₹999
                 </p>
             </div>
 

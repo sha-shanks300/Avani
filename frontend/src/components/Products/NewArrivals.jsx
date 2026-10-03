@@ -78,7 +78,7 @@ const NewArrivals = () => {
                     <div className="text-left">
                         <h2 className="text-3xl font-bold tracking-tight text-gray-900">Explore New Arrivals</h2>
                         <p className="mt-2 text-gray-500 max-w-md">
-                            Discover the latest styles straight off the runway, freshly added to keep your wardrobe on the cutting edge.
+                            Fresh drops across fragrance, keychains and prints — the newest additions to the shelf.
                         </p>
                     </div>
                     
@@ -123,7 +123,7 @@ const NewArrivals = () => {
                             <div className="text-left">
                                 <Link to={`/product/${product._id}`} className="block">
                                     <h4 className="font-semibold text-gray-900 uppercase tracking-wider text-sm">{product.name}</h4>
-                                    <p className="mt-1 text-gray-500 font-medium">${product.price}</p>
+                                    <p className="mt-1 text-gray-500 font-medium">₹{product.price}</p>
                                 </Link>
                             </div>
                         </div>

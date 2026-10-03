@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import register from "../assets/register.webp";
 
@@ -11,6 +11,8 @@ const Register = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [name, setName] = useState("");
+    const [formError, setFormError] = useState(null);
+    const passwordRef = useRef(null);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
@@ -33,9 +35,18 @@ const Register = () => {
         }
     }, [user, guestId, cart, navigate, isCheckoutRedirect, dispatch])
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        dispatch(registerUser({name,email,password}));
+        setFormError(null);
+        const result = await dispatch(registerUser({name,email,password}));
+        if (registerUser.rejected.match(result)) {
+            setFormError(result.payload?.message || "Couldn't create your account. Check your details and try again.");
+            // Ask for the password again rather than leaving the rejected one in place.
+            if (result.payload?.field === "password") {
+                setPassword("");
+                passwordRef.current?.focus();
+            }
+        }
     }
 
     return (
@@ -44,12 +55,12 @@ const Register = () => {
             <div className='w-full md:w-1/2 flex flex-col justify-center items-center p-8 md:p-12 bg-white'>
                 <form onSubmit={handleSubmit} className='w-full max-w-md'>
                     <div className='flex justify-center mb-6'>
-                        <h2 className='text-2xl font-bold uppercase tracking-widest'>Rabbit</h2>
+                        <h2 className='text-2xl font-bold uppercase tracking-widest'>Avani</h2>
                     </div>
                     
                     <h2 className='text-2xl font-bold text-center mb-2 uppercase tracking-tight'>Create an Account</h2>
                     <p className='text-center text-gray-500 mb-8'>
-                        Enter your details to join the Rabbit community
+                        Enter your details to join the Avani community
                     </p>
 
                     <div className='mb-4'>
@@ -79,14 +90,22 @@ const Register = () => {
                     <div className='mb-6'>
                         <label className='block text-xs font-bold uppercase tracking-wider mb-2 text-gray-800'>Password</label>
                         <input 
+                            ref={passwordRef}
                             type='password' 
                             value={password} 
                             onChange={(e) => setPassword(e.target.value)} 
                             className='w-full p-3 border border-gray-300 rounded-none focus:outline-none focus:border-black transition-colors' 
                             placeholder='Enter your password'
+                            minLength={6}
+                            aria-describedby='password-hint'
                             required
                         />
+                        <p id='password-hint' className='mt-2 text-xs text-gray-500'>At least 6 characters.</p>
                     </div>
+
+                    {formError && (
+                        <p role='alert' className='mb-4 text-sm text-red-600'>{formError}</p>
+                    )}
 
                     <button 
                         type="submit" 
@@ -109,7 +128,7 @@ const Register = () => {
                 <div className='h-full'>
                     <img 
                         src={register} 
-                        alt="Join Rabbit" 
+                        alt="Join Avani" 
                         className='h-full w-full object-cover'
                     />
                 </div>
