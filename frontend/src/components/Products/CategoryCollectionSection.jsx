@@ -1,8 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-import perfumeImage from "../../assets/perfumes.JPG";
-import keychainImage from "../../assets/keychains.JPG";
-import posterImage from "../../assets/posters.jpeg";
+import perfumeImage from "../../assets/perfumes.webp";
+import keychainImage from "../../assets/keychains.webp";
+import posterImage from "../../assets/posters.webp";
 
 const categories = [
   { label: "Perfumes", query: "Perfumes", image: perfumeImage },
