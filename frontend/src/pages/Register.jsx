@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import register from "../assets/register.webp";
 
@@ -11,6 +11,8 @@ const Register = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [name, setName] = useState("");
+    const [formError, setFormError] = useState(null);
+    const passwordRef = useRef(null);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
@@ -33,9 +35,18 @@ const Register = () => {
         }
     }, [user, guestId, cart, navigate, isCheckoutRedirect, dispatch])
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        dispatch(registerUser({name,email,password}));
+        setFormError(null);
+        const result = await dispatch(registerUser({name,email,password}));
+        if (registerUser.rejected.match(result)) {
+            setFormError(result.payload?.message || "Couldn't create your account. Check your details and try again.");
+            // Ask for the password again rather than leaving the rejected one in place.
+            if (result.payload?.field === "password") {
+                setPassword("");
+                passwordRef.current?.focus();
+            }
+        }
     }
 
     return (
@@ -79,14 +90,22 @@ const Register = () => {
                     <div className='mb-6'>
                         <label className='block text-xs font-bold uppercase tracking-wider mb-2 text-gray-800'>Password</label>
                         <input 
+                            ref={passwordRef}
                             type='password' 
                             value={password} 
                             onChange={(e) => setPassword(e.target.value)} 
                             className='w-full p-3 border border-gray-300 rounded-none focus:outline-none focus:border-black transition-colors' 
                             placeholder='Enter your password'
+                            minLength={6}
+                            aria-describedby='password-hint'
                             required
                         />
+                        <p id='password-hint' className='mt-2 text-xs text-gray-500'>At least 6 characters.</p>
                     </div>
+
+                    {formError && (
+                        <p role='alert' className='mb-4 text-sm text-red-600'>{formError}</p>
+                    )}
 
                     <button 
                         type="submit" 

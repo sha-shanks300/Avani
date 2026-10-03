@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import login from "../assets/login.webp";
 import {loginUser} from "../redux/slices/authSlice"
@@ -9,6 +9,8 @@ import { mergeCart } from '../redux/slices/cartSlice';
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [formError, setFormError] = useState(null);
+    const passwordRef = useRef(null);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
@@ -31,9 +33,16 @@ const Login = () => {
         }
     }, [user, guestId, cart, navigate, isCheckoutRedirect, dispatch])
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        dispatch(loginUser({email,password}));
+        setFormError(null);
+        const result = await dispatch(loginUser({email,password}));
+        if (loginUser.rejected.match(result)) {
+            setFormError(result.payload?.message || "Couldn't sign you in. Check your connection and try again.");
+            // Keep the email, ask for the password again.
+            setPassword("");
+            passwordRef.current?.focus();
+        }
     }
 
     return (
@@ -67,6 +76,7 @@ const Login = () => {
                     <div className='mb-6'>
                         <label className='block text-xs font-bold uppercase tracking-wider mb-2 text-gray-800'>Password</label>
                         <input 
+                            ref={passwordRef}
                             type='password' 
                             value={password} 
                             onChange={(e) => setPassword(e.target.value)} 
@@ -75,6 +85,10 @@ const Login = () => {
                             required
                         />
                     </div>
+
+                    {formError && (
+                        <p role='alert' className='mb-4 text-sm text-red-600'>{formError}</p>
+                    )}
 
                     {/* Refinement: Squared button with letter spacing */}
                     <button 
