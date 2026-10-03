@@ -24,8 +24,15 @@ app.use(cors());
 const connectDB = require("./config/db");
 const PORT = process.env.PORT || 3000;
 
-//connect to mongodb database
-connectDB();
+//connect to mongodb database before handling any request
+app.use(async (req, res, next) => {
+    try {
+        await connectDB();
+        next();
+    } catch (err) {
+        res.status(500).json({ message: "Database connection failed" });
+    }
+});
 
 app.get("/",(req,res)=>{
     res.send("WELCOME TO AVANI API");
@@ -46,6 +53,12 @@ app.use("/api/admin/users",adminRoutes);
 app.use("/api/admin/products",productAdminRoutes);
 app.use("/api/admin/orders",adminOrderRoutes);
 
-app.listen(PORT,()=>{
-    console.log(`Server is running on http://localhost:${PORT}`);
-})
+// On Vercel the app is exported and run as a serverless function,
+// so only start a long-running server when running locally.
+if (!process.env.VERCEL) {
+    app.listen(PORT,()=>{
+        console.log(`Server is running on http://localhost:${PORT}`);
+    });
+}
+
+module.exports = app;
