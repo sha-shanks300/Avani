@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
+// Cheapest item in the catalogue is ₹120, so the slider starts at ₹100
+// rather than wasting its first fifth on prices nothing sells for.
+const MIN_PRICE = 100;
 const MAX_PRICE = 500;
+const PRICE_STEP = 10;
 
 const CATEGORIES = ["Perfumes", "NFC Keychains", "Posters"];
 
@@ -9,18 +13,19 @@ const CATEGORIES = ["Perfumes", "NFC Keychains", "Posters"];
 // backend already understands, so nothing here needs an API change.
 const FACETS = {
     "Perfumes": [
-        { param: "brand", label: "House", multi: true, options: ["Chanel", "Dior", "Yves Saint Laurent", "Gucci", "Burberry", "Kayali", "Marc Jacobs", "Victoria's Secret", "Lattafa"] },
+        { param: "brand", label: "House", multi: true, options: ["Chanel", "Dior", "Yves Saint Laurent", "Gucci", "Kayali", "Marc Jacobs", "Victoria's Secret", "Lattafa"] },
         { param: "collection", label: "Scent Family", multi: false, options: ["Floral", "Gourmand", "Oud"] },
         { param: "material", label: "Concentration", multi: true, options: ["Eau de Parfum", "Eau de Toilette"] },
         { param: "gender", label: "Wear", multi: false, options: ["Women", "Unisex"] },
     ],
     "NFC Keychains": [
-        { param: "brand", label: "Artist", multi: true, options: ["21 Savage", "A$AP Rocky", "A.R. Rahman", "Anirudh Ravichander", "Ankur Tiwari", "Billie Eilish", "Childish Gambino", "Don Toliver", "Drake", "Eminem", "Frank Ocean", "Future", "Joji", "Kanye West", "Ken Carson", "Kendrick Lamar", "Lana Del Rey", "Metro Boomin", "Michael Jackson", "Olivia Rodrigo", "PARTYNEXTDOOR", "Playboi Carti", "Pusha T", "SZA", "Sabrina Carpenter", "Shashwat Sachdev", "Taylor Swift", "The Weeknd", "Tory Lanez", "Travis Scott"] },
-        { param: "collection", label: "Genre", multi: false, options: ["Hip-Hop", "R&B", "Pop", "Alternative", "Indian Cinema"] },
+        { param: "brand", label: "Artist", multi: true, options: ["21 Savage", "A$AP Rocky", "Childish Gambino", "Clipse", "Don Toliver", "Drake", "Eminem", "Frank Ocean", "Future", "Kanye West", "Ken Carson", "Kendrick Lamar", "Madvillain", "Metro Boomin", "Michael Jackson", "PARTYNEXTDOOR", "Playboi Carti", "SZA", "The Weeknd", "Tory Lanez", "Travis Scott", "Tyler, The Creator", "Various Artists"] },
+        { param: "collection", label: "Genre", multi: false, options: ["Hip-Hop", "R&B", "Pop"] },
         { param: "color", label: "Finish", multi: false, options: ["Black", "Silver", "Gold"] },
     ],
     "Posters": [
-        { param: "collection", label: "Theme", multi: false, options: ["Album Art", "Anime", "Abstract", "Typography", "Retro", "Film"] },
+        { param: "brand", label: "Artist", multi: true, options: ["A.R. Rahman", "Anirudh Ravichander", "Don Toliver", "Frank Ocean", "Future", "Kanye West", "Kendrick Lamar", "Kid Cudi", "Metro Boomin", "MF DOOM", "Playboi Carti", "Santhosh Narayanan", "The Weeknd", "Travis Scott", "Tupac"] },
+        { param: "collection", label: "Genre", multi: false, options: ["Hip-Hop", "R&B", "Indian Cinema"] },
         { param: "size", label: "Size", multi: true, options: ["A4", "A3", "A2"] },
         { param: "material", label: "Finish", multi: true, options: ["Matte Paper", "Glossy", "Canvas"] },
     ],
@@ -31,7 +36,7 @@ const MULTI_PARAMS = ["brand", "material", "size"];
 const FilterSidebar = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const [filters, setFilters] = useState({});
-    const [priceRange, setPriceRange] = useState([0, MAX_PRICE]);
+    const [priceRange, setPriceRange] = useState([MIN_PRICE, MAX_PRICE]);
 
     const activeCategory = filters.category || "";
     const facets = FACETS[activeCategory] || [];
@@ -40,10 +45,10 @@ const FilterSidebar = () => {
         const params = Object.fromEntries([...searchParams]);
         const next = { ...params };
         MULTI_PARAMS.forEach((key) => {
-            next[key] = params[key] ? params[key].split(",") : [];
+            next[key] = params[key] ? params[key].split("|") : [];
         });
         setFilters(next);
-        setPriceRange([0, Number(params.maxPrice) || MAX_PRICE]);
+        setPriceRange([MIN_PRICE, Number(params.maxPrice) || MAX_PRICE]);
     }, [searchParams]);
 
     const updateURLParams = (newFilters) => {
@@ -51,7 +56,7 @@ const FilterSidebar = () => {
         Object.keys(newFilters).forEach((key) => {
             const value = newFilters[key];
             if (Array.isArray(value) && value.length > 0) {
-                params.set(key, value.join(","));
+                params.set(key, value.join("|"));
             } else if (value && !Array.isArray(value)) {
                 params.set(key, value);
             }
@@ -80,7 +85,6 @@ const FilterSidebar = () => {
     const handleCategoryChange = (category) => {
         const next = {
             category: filters.category === category ? "" : category,
-            minPrice: filters.minPrice,
             maxPrice: filters.maxPrice,
         };
         setFilters(next);
@@ -89,15 +93,17 @@ const FilterSidebar = () => {
 
     const handlePriceChange = (e) => {
         const newMaxPrice = e.target.value;
-        setPriceRange([0, newMaxPrice]);
-        const newFilters = { ...filters, minPrice: 0, maxPrice: newMaxPrice };
+        setPriceRange([MIN_PRICE, newMaxPrice]);
+        // At the top of the range there's no limit, so drop it from the URL.
+        const newFilters = { ...filters, maxPrice: Number(newMaxPrice) >= MAX_PRICE ? "" : newMaxPrice };
+        delete newFilters.minPrice;
         setFilters(newFilters);
         updateURLParams(newFilters);
     };
 
     const clearAll = () => {
         setFilters({});
-        setPriceRange([0, MAX_PRICE]);
+        setPriceRange([MIN_PRICE, MAX_PRICE]);
         setSearchParams(new URLSearchParams());
     };
 
@@ -107,8 +113,9 @@ const FilterSidebar = () => {
     });
 
     return (
-        <div className='p-4'>
-            <div className='flex items-center justify-between mb-8'>
+        <div>
+            {/* h-10 matches the page title row so both headings share a centre line */}
+            <div className='flex items-center justify-between h-10 mb-8'>
                 <h3 className='text-sm font-bold text-gray-900 uppercase tracking-widest'>Filters</h3>
                 {hasActiveFilters && (
                     <button
@@ -181,15 +188,17 @@ const FilterSidebar = () => {
                 <input
                     type="range"
                     name="priceRange"
-                    min={0}
+                    min={MIN_PRICE}
                     max={MAX_PRICE}
+                    step={PRICE_STEP}
+                    aria-label="Maximum price"
                     value={priceRange[1]}
                     onChange={handlePriceChange}
                     className='w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-black'
                 />
                 <div className='flex justify-between text-xs font-medium text-gray-500 mt-3'>
-                    <span>₹0</span>
-                    <span>₹{priceRange[1]}</span>
+                    <span>₹{MIN_PRICE}</span>
+                    <span>{Number(priceRange[1]) >= MAX_PRICE ? "Any price" : `Up to ₹${priceRange[1]}`}</span>
                 </div>
             </div>
         </div>

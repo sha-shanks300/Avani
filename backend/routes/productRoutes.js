@@ -180,10 +180,11 @@ router.get("/", async (req, res) => {
       query.category = category;
     }
 
-    // The sidebar sends multi-select facets as a comma-joined list, so match
+    // The sidebar sends multi-select facets as a pipe-joined list (artist names
+    // like "Tyler, The Creator" contain commas), so match
     // any of them rather than the literal "A,B" string.
     const anyOf = (value) => {
-      const values = String(value).split(",").map((v) => v.trim()).filter(Boolean);
+      const values = String(value).split("|").map((v) => v.trim()).filter(Boolean);
       return values.length > 1 ? { $in: values } : values[0];
     };
 

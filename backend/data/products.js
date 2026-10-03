@@ -20,8 +20,7 @@ const perfumes = [
     gender: "Women",
     tags: ["aldehydic", "floral", "classic", "evening"],
     images: [
-      { url: "https://picsum.photos/600/750?random=101", altText: "Chanel N°5 bottle" },
-      { url: "https://picsum.photos/600/750?random=102", altText: "Chanel N°5 detail" },
+      { url: "/products/perfumes/chanel-no5.jpg", altText: "Chanel N°5 20ml bottle" },
     ],
     rating: 4.9,
     numReviews: 48,
@@ -42,8 +41,7 @@ const perfumes = [
     gender: "Women",
     tags: ["rose", "peony", "romantic", "daytime"],
     images: [
-      { url: "https://picsum.photos/600/750?random=103", altText: "Miss Dior bottle" },
-      { url: "https://picsum.photos/600/750?random=104", altText: "Miss Dior detail" },
+      { url: "/products/perfumes/miss-dior.jpg", altText: "Miss Dior 20ml bottle" },
     ],
     rating: 4.8,
     numReviews: 41,
@@ -64,8 +62,7 @@ const perfumes = [
     gender: "Women",
     tags: ["coffee", "vanilla", "gourmand", "night"],
     images: [
-      { url: "https://picsum.photos/600/750?random=105", altText: "Black Opium bottle" },
-      { url: "https://picsum.photos/600/750?random=106", altText: "Black Opium detail" },
+      { url: "/products/perfumes/black-opium.jpg", altText: "Black Opium 20ml bottle" },
     ],
     rating: 4.8,
     numReviews: 52,
@@ -86,33 +83,10 @@ const perfumes = [
     gender: "Women",
     tags: ["gardenia", "pear", "sweet", "daytime"],
     images: [
-      { url: "https://picsum.photos/600/750?random=107", altText: "Gucci Flora bottle" },
-      { url: "https://picsum.photos/600/750?random=108", altText: "Gucci Flora detail" },
+      { url: "/products/perfumes/flora-gorgeous-gardenia.jpg", altText: "Gucci Flora Gorgeous Gardenia 20ml bottle" },
     ],
     rating: 4.7,
     numReviews: 36,
-  },
-  {
-    name: "Burberry Her",
-    description:
-      "A berry gourmand — dark and red fruits stacked over a violet heart, drying down to musk and amber woods. Youthful and cosy, and it lingers on fabric longer than it does on skin.",
-    price: 320,
-    countInStock: 30,
-    sku: "PF-005",
-    category: "Perfumes",
-    brand: "Burberry",
-    sizes: ["20ml"],
-    colors: [],
-    collections: "Gourmand",
-    material: "Eau de Parfum",
-    gender: "Women",
-    tags: ["berry", "violet", "musk", "everyday"],
-    images: [
-      { url: "https://picsum.photos/600/750?random=109", altText: "Burberry Her bottle" },
-      { url: "https://picsum.photos/600/750?random=110", altText: "Burberry Her detail" },
-    ],
-    rating: 4.7,
-    numReviews: 39,
   },
   {
     name: "Kayali Eden Juicy Apple 01",
@@ -130,8 +104,7 @@ const perfumes = [
     gender: "Women",
     tags: ["apple", "fruity", "amberwood", "viral"],
     images: [
-      { url: "https://picsum.photos/600/750?random=111", altText: "Kayali Eden Juicy Apple bottle" },
-      { url: "https://picsum.photos/600/750?random=112", altText: "Kayali Eden detail" },
+      { url: "/products/perfumes/eden-juicy-apple.jpg", altText: "Kayali Eden Juicy Apple 01 20ml bottle" },
     ],
     rating: 4.8,
     numReviews: 44,
@@ -152,8 +125,7 @@ const perfumes = [
     gender: "Women",
     tags: ["strawberry", "violet", "fresh", "daytime"],
     images: [
-      { url: "https://picsum.photos/600/750?random=113", altText: "Marc Jacobs Daisy bottle" },
-      { url: "https://picsum.photos/600/750?random=114", altText: "Marc Jacobs Daisy detail" },
+      { url: "/products/perfumes/daisy.jpg", altText: "Marc Jacobs Daisy 20ml bottle" },
     ],
     rating: 4.6,
     numReviews: 33,
@@ -174,8 +146,7 @@ const perfumes = [
     gender: "Women",
     tags: ["passionfruit", "peony", "fruity", "everyday"],
     images: [
-      { url: "https://picsum.photos/600/750?random=115", altText: "Bombshell bottle" },
-      { url: "https://picsum.photos/600/750?random=116", altText: "Bombshell detail" },
+      { url: "/products/perfumes/bombshell.jpg", altText: "Victoria's Secret Bombshell 20ml bottle" },
     ],
     rating: 4.6,
     numReviews: 37,
@@ -196,8 +167,7 @@ const perfumes = [
     gender: "Women",
     tags: ["orange blossom", "vanilla", "creamy", "long lasting"],
     images: [
-      { url: "https://picsum.photos/600/750?random=117", altText: "Lattafa Yara bottle" },
-      { url: "https://picsum.photos/600/750?random=118", altText: "Lattafa Yara detail" },
+      { url: "/products/perfumes/yara.jpg", altText: "Lattafa Yara 20ml bottle" },
     ],
     rating: 4.7,
     numReviews: 51,
@@ -218,8 +188,7 @@ const perfumes = [
     gender: "Unisex",
     tags: ["oud", "agarwood", "saffron", "occasion"],
     images: [
-      { url: "https://picsum.photos/600/750?random=119", altText: "Royal Oud bottle" },
-      { url: "https://picsum.photos/600/750?random=120", altText: "Royal Oud detail" },
+      { url: "/products/perfumes/royal-ouudh.jpg", altText: "Royal Oud 20ml bottle" },
     ],
     rating: 4.6,
     numReviews: 29,
@@ -232,84 +201,77 @@ const perfumes = [
 // ---------------------------------------------------------------------------
 const albums = [
   // Kanye West
-  { album: "Graduation", artist: "Kanye West", genre: "Hip-Hop", year: 2007 },
-  { album: "Late Registration", artist: "Kanye West", genre: "Hip-Hop", year: 2005 },
-  { album: "808s & Heartbreak", artist: "Kanye West", genre: "Hip-Hop", year: 2008 },
-  { album: "My Beautiful Dark Twisted Fantasy", artist: "Kanye West", genre: "Hip-Hop", year: 2010 },
-  { album: "The Life of Pablo", artist: "Kanye West", genre: "Hip-Hop", year: 2016 },
+  { album: "The College Dropout", artist: "Kanye West", genre: "Hip-Hop", year: 2004, cover: "kanye-west-the-college-dropout" },
+  { album: "Graduation", artist: "Kanye West", genre: "Hip-Hop", year: 2007, cover: "kanye-west-graduation" },
+  { album: "808s & Heartbreak", artist: "Kanye West", genre: "Hip-Hop", year: 2008, cover: "kanye-west-808s-and-heartbreak" },
+  { album: "My Beautiful Dark Twisted Fantasy", artist: "Kanye West", genre: "Hip-Hop", year: 2010, cover: "kanye-west-my-beautiful-dark-twisted-fantasy" },
+  { album: "The Life of Pablo", artist: "Kanye West", genre: "Hip-Hop", year: 2016, cover: "kanye-west-the-life-of-pablo" },
   // Travis Scott
-  { album: "Rodeo", artist: "Travis Scott", genre: "Hip-Hop", year: 2015 },
-  { album: "Days Before Rodeo", artist: "Travis Scott", genre: "Hip-Hop", year: 2014 },
-  { album: "Astroworld", artist: "Travis Scott", genre: "Hip-Hop", year: 2018 },
-  { album: "Utopia", artist: "Travis Scott", genre: "Hip-Hop", year: 2023 },
-  { album: "JACKBOYS", artist: "Travis Scott", genre: "Hip-Hop", year: 2019 },
+  { album: "Days Before Rodeo", artist: "Travis Scott", genre: "Hip-Hop", year: 2014, cover: "travis-scott-days-before-rodeo" },
+  { album: "Rodeo", artist: "Travis Scott", genre: "Hip-Hop", year: 2015, cover: "travis-scott-rodeo" },
+  { album: "Astroworld", artist: "Travis Scott", genre: "Hip-Hop", year: 2018, cover: "travis-scott-astroworld" },
+  { album: "JACKBOYS", artist: "Travis Scott", genre: "Hip-Hop", year: 2019, with: ["JACKBOYS"], cover: "jackboys-and-travis-scott-jackboys" },
+  { album: "Utopia", artist: "Travis Scott", genre: "Hip-Hop", year: 2023, cover: "travis-scott-utopia" },
   // Kendrick Lamar
-  { album: "good kid, m.A.A.d city", artist: "Kendrick Lamar", genre: "Hip-Hop", year: 2012 },
-  { album: "To Pimp a Butterfly", artist: "Kendrick Lamar", genre: "Hip-Hop", year: 2015 },
-  { album: "DAMN.", artist: "Kendrick Lamar", genre: "Hip-Hop", year: 2017 },
-  { album: "Mr. Morale & The Big Steppers", artist: "Kendrick Lamar", genre: "Hip-Hop", year: 2022 },
-  { album: "GNX", artist: "Kendrick Lamar", genre: "Hip-Hop", year: 2024 },
+  { album: "good kid, m.A.A.d city", artist: "Kendrick Lamar", genre: "Hip-Hop", year: 2012, cover: "kendrick-lamar-good-kid-m-a-a-d-city" },
+  { album: "To Pimp a Butterfly", artist: "Kendrick Lamar", genre: "Hip-Hop", year: 2015, cover: "kendrick-lamar-to-pimp-a-butterfly" },
+  { album: "DAMN.", artist: "Kendrick Lamar", genre: "Hip-Hop", year: 2017, cover: "kendrick-lamar-damn" },
+  { album: "Mr. Morale & The Big Steppers", artist: "Kendrick Lamar", genre: "Hip-Hop", year: 2022, cover: "kendrick-lamar-mr-morale-and-the-big-steppers" },
+  { album: "GNX", artist: "Kendrick Lamar", genre: "Hip-Hop", year: 2024, cover: "kendrick-lamar-gnx" },
   // Metro Boomin
-  { album: "Without Warning", artist: "Metro Boomin", genre: "Hip-Hop", year: 2017, with: ["21 Savage", "Offset"] },
-  { album: "Heroes & Villains", artist: "Metro Boomin", genre: "Hip-Hop", year: 2022 },
-  { album: "Not All Heroes Wear Capes", artist: "Metro Boomin", genre: "Hip-Hop", year: 2018 },
-  { album: "Spider-Man: Across the Spider-Verse", artist: "Metro Boomin", genre: "Hip-Hop", year: 2023 },
+  { album: "Without Warning", artist: "Metro Boomin", genre: "Hip-Hop", year: 2017, with: ["21 Savage", "Offset"], cover: "21-savage-offset-and-metro-boomin-without-warning" },
+  { album: "Not All Heroes Wear Capes", artist: "Metro Boomin", genre: "Hip-Hop", year: 2018, cover: "metro-boomin-not-all-heroes-wear-capes" },
+  { album: "Heroes & Villains", artist: "Metro Boomin", genre: "Hip-Hop", year: 2022, cover: "metro-boomin-heroes-and-villains" },
+  { album: "Spider-Man: Across the Spider-Verse", artist: "Metro Boomin", genre: "Hip-Hop", year: 2023, cover: "metro-boomin-metro-boomin-presents-spider-man-across-the-spider-verse" },
   // Future
-  { album: "We Don't Trust You", artist: "Future", genre: "Hip-Hop", year: 2024, with: ["Metro Boomin"] },
+  { album: "We Don't Trust You", artist: "Future", genre: "Hip-Hop", year: 2024, with: ["Metro Boomin"], cover: "future-and-metro-boomin-we-don-t-trust-you" },
   // Don Toliver
-  { album: "Heaven or Hell", artist: "Don Toliver", genre: "R&B", year: 2020 },
-  { album: "Life of a DON", artist: "Don Toliver", genre: "R&B", year: 2021 },
-  { album: "Love Sick", artist: "Don Toliver", genre: "R&B", year: 2023 },
-  { album: "Hardstone Psycho", artist: "Don Toliver", genre: "R&B", year: 2024 },
+  { album: "Heaven or Hell", artist: "Don Toliver", genre: "R&B", year: 2020, cover: "don-toliver-heaven-or-hell" },
+  { album: "Love Sick", artist: "Don Toliver", genre: "R&B", year: 2023, cover: "don-toliver-love-sick" },
+  { album: "Hardstone Psycho", artist: "Don Toliver", genre: "R&B", year: 2024, cover: "don-toliver-hardstone-psycho" },
   // Playboi Carti
-  { album: "Playboi Carti", artist: "Playboi Carti", genre: "Hip-Hop", year: 2017 },
-  { album: "Die Lit", artist: "Playboi Carti", genre: "Hip-Hop", year: 2018 },
-  { album: "Whole Lotta Red", artist: "Playboi Carti", genre: "Hip-Hop", year: 2020 },
-  { album: "I AM MUSIC", artist: "Playboi Carti", genre: "Hip-Hop", year: 2025 },
+  { album: "Playboi Carti", artist: "Playboi Carti", genre: "Hip-Hop", year: 2017, cover: "playboi-carti-playboi-carti" },
+  { album: "Die Lit", artist: "Playboi Carti", genre: "Hip-Hop", year: 2018, cover: "playboi-carti-die-lit" },
+  { album: "Whole Lotta Red", artist: "Playboi Carti", genre: "Hip-Hop", year: 2020, cover: "playboi-carti-whole-lotta-red" },
+  { album: "MUSIC", artist: "Playboi Carti", genre: "Hip-Hop", year: 2025, cover: "playboi-carti-music" },
   // The Weeknd
-  { album: "Starboy", artist: "The Weeknd", genre: "R&B", year: 2016 },
-  { album: "After Hours", artist: "The Weeknd", genre: "R&B", year: 2020 },
-  { album: "Dawn FM", artist: "The Weeknd", genre: "R&B", year: 2022 },
-  // Lana Del Rey
-  { album: "Born to Die", artist: "Lana Del Rey", genre: "Alternative", year: 2012 },
-  { album: "Ultraviolence", artist: "Lana Del Rey", genre: "Alternative", year: 2014 },
-  { album: "Norman Fucking Rockwell!", artist: "Lana Del Rey", genre: "Alternative", year: 2019 },
+  { album: "Beauty Behind the Madness", artist: "The Weeknd", genre: "R&B", year: 2015, cover: "the-weeknd-beauty-behind-the-madness" },
+  { album: "Starboy", artist: "The Weeknd", genre: "R&B", year: 2016, cover: "the-weeknd-starboy" },
+  { album: "After Hours", artist: "The Weeknd", genre: "R&B", year: 2020, cover: "the-weeknd-after-hours" },
+  { album: "Dawn FM", artist: "The Weeknd", genre: "R&B", year: 2022, cover: "the-weeknd-dawn-fm" },
+  { album: "Hurry Up Tomorrow", artist: "The Weeknd", genre: "R&B", year: 2025, cover: "the-weeknd-hurry-up-tomorrow" },
   // 21 Savage
-  { album: "i am > i was", artist: "21 Savage", genre: "Hip-Hop", year: 2018 },
-  { album: "Savage Mode II", artist: "21 Savage", genre: "Hip-Hop", year: 2020, with: ["Metro Boomin"] },
+  { album: "i am > i was", artist: "21 Savage", genre: "Hip-Hop", year: 2018, cover: "21-savage-i-am-i-was" },
+  { album: "Savage Mode II", artist: "21 Savage", genre: "Hip-Hop", year: 2020, with: ["Metro Boomin"], cover: "21-savage-and-metro-boomin-savage-mode-ii" },
   // Drake
-  { album: "Take Care", artist: "Drake", genre: "Hip-Hop", year: 2011 },
-  { album: "Certified Lover Boy", artist: "Drake", genre: "Hip-Hop", year: 2021 },
+  { album: "Take Care", artist: "Drake", genre: "Hip-Hop", year: 2011, cover: "drake-take-care" },
+  { album: "Certified Lover Boy", artist: "Drake", genre: "Hip-Hop", year: 2021, cover: "drake-certified-lover-boy" },
   // Eminem
-  { album: "The Eminem Show", artist: "Eminem", genre: "Hip-Hop", year: 2002 },
-  { album: "Music to Be Murdered By", artist: "Eminem", genre: "Hip-Hop", year: 2020 },
-  // Billie Eilish
-  { album: "Happier Than Ever", artist: "Billie Eilish", genre: "Pop", year: 2021 },
-  { album: "Hit Me Hard and Soft", artist: "Billie Eilish", genre: "Pop", year: 2024 },
-  // Olivia Rodrigo
-  { album: "SOUR", artist: "Olivia Rodrigo", genre: "Pop", year: 2021 },
-  { album: "GUTS", artist: "Olivia Rodrigo", genre: "Pop", year: 2023 },
-  // Anirudh Ravichander
-  { album: "Vikram", artist: "Anirudh Ravichander", genre: "Indian Cinema", year: 2022 },
-  { album: "Master", artist: "Anirudh Ravichander", genre: "Indian Cinema", year: 2021 },
+  { album: "The Eminem Show", artist: "Eminem", genre: "Hip-Hop", year: 2002, cover: "eminem-the-eminem-show" },
+  { album: "Music to Be Murdered By", artist: "Eminem", genre: "Hip-Hop", year: 2020, cover: "eminem-music-to-be-murdered-by" },
+  // Frank Ocean
+  { album: "channel ORANGE", artist: "Frank Ocean", genre: "R&B", year: 2012, cover: "frank-ocean-channel-orange" },
+  { album: "Blonde", artist: "Frank Ocean", genre: "R&B", year: 2016, cover: "frank-ocean-blonde" },
+  // A$AP Rocky
+  { album: "AT.LONG.LAST.A$AP", artist: "A$AP Rocky", genre: "Hip-Hop", year: 2015, cover: "asap-rocky-at-long-last-asap" },
+  { album: "TESTING", artist: "A$AP Rocky", genre: "Hip-Hop", year: 2018, cover: "asap-rocky-testing" },
+  // Tyler, The Creator
+  { album: "Flower Boy", artist: "Tyler, The Creator", genre: "Hip-Hop", year: 2017, cover: "tyler-the-creator-flower-boy" },
+  { album: "IGOR", artist: "Tyler, The Creator", genre: "Hip-Hop", year: 2019, cover: "tyler-the-creator-igor" },
   // Single releases
-  { album: "Thriller", artist: "Michael Jackson", genre: "Pop", year: 1982 },
-  { album: "Blonde", artist: "Frank Ocean", genre: "R&B", year: 2016 },
-  { album: "Nectar", artist: "Joji", genre: "Alternative", year: 2020 },
-  { album: "Awaken, My Love!", artist: "Childish Gambino", genre: "R&B", year: 2016 },
-  { album: "LONG.LIVE.A$AP", artist: "A$AP Rocky", genre: "Hip-Hop", year: 2013 },
-  { album: "PARTYNEXTDOOR 2", artist: "PARTYNEXTDOOR", genre: "R&B", year: 2014 },
-  { album: "SOS", artist: "SZA", genre: "R&B", year: 2022 },
-  { album: "Midnights", artist: "Taylor Swift", genre: "Pop", year: 2022 },
-  { album: "More Chaos", artist: "Ken Carson", genre: "Hip-Hop", year: 2025 },
-  { album: "Alone at Prom (Deluxe)", artist: "Tory Lanez", genre: "R&B", year: 2021 },
-  { album: "Let God Sort Em Out", artist: "Pusha T", genre: "Hip-Hop", year: 2025, with: ["Clipse", "Malice"] },
-  { album: "Enthiran", artist: "A.R. Rahman", genre: "Indian Cinema", year: 2010 },
-  { album: "Dhurandhar", artist: "Shashwat Sachdev", genre: "Indian Cinema", year: 2025 },
-  { album: "Gully Boy", artist: "Ankur Tiwari", genre: "Indian Cinema", year: 2019 },
-  { album: "Short n' Sweet", artist: "Sabrina Carpenter", genre: "Pop", year: 2024 },
+  { album: "Thriller", artist: "Michael Jackson", genre: "Pop", year: 1982, cover: "michael-jackson-thriller" },
+  { album: "Madvillainy", artist: "Madvillain", genre: "Hip-Hop", year: 2004, cover: "madvillain-madvillainy" },
+  { album: "Awaken, My Love!", artist: "Childish Gambino", genre: "R&B", year: 2016, cover: "childish-gambino-awaken-my-love" },
+  { album: "PARTYNEXTDOOR TWO", artist: "PARTYNEXTDOOR", genre: "R&B", year: 2014, cover: "partynextdoor-partynextdoor-two" },
+  { album: "SOS", artist: "SZA", genre: "R&B", year: 2022, cover: "sza-sos" },
+  { album: "A Great Chaos", artist: "Ken Carson", genre: "Hip-Hop", year: 2023, cover: "ken-carson-a-great-chaos" },
+  { album: "Alone at Prom (Deluxe)", artist: "Tory Lanez", genre: "R&B", year: 2021, cover: "tory-lanez-alone-at-prom-deluxe" },
+  { album: "Let God Sort Em Out", artist: "Clipse", genre: "Hip-Hop", year: 2025, with: ["Pusha T", "Malice"], cover: "clipse-let-god-sort-em-out" },
+  { album: "Spider-Man: Into the Spider-Verse", artist: "Various Artists", genre: "Hip-Hop", year: 2018, cover: "various-artists-spider-man-into-the-spider-verse" },
 ];
 
+// Images are rendered from frontend/src/assets/covers into the keychain product
+// card template and served by the frontend from /products/keychains/.
 const keychains = albums.map((a, i) => ({
   name: a.album,
   description:
@@ -327,51 +289,78 @@ const keychains = albums.map((a, i) => ({
   material: "Stainless Steel",
   tags: [a.artist, a.album, a.genre, String(a.year)].concat(a.with || []),
   images: [
-    { url: "https://picsum.photos/600/600?random=" + (200 + i * 2), altText: a.album + " keychain front" },
-    { url: "https://picsum.photos/600/600?random=" + (201 + i * 2), altText: a.album + " keychain back" },
+    { url: "/products/keychains/" + a.cover + ".jpg", altText: a.album + " NFC keychain" },
+    { url: "/products/keychains/" + a.cover + "-cover.jpg", altText: a.album + " album cover" },
   ],
   rating: Number((4.5 + (i % 5) * 0.1).toFixed(1)),
   numReviews: 8 + (i % 23),
 }));
 
 // ---------------------------------------------------------------------------
-// POSTERS — placeholder catalogue. Flat 249; sizes are selectable but the schema
-// holds one price per product, so per-size pricing isn't expressed yet.
+// POSTERS — flat 249; sizes are selectable but the schema holds one price per
+// product, so per-size pricing isn't expressed yet. `brand` carries the ARTIST.
+// Images are rendered from frontend/src/assets/posters into the poster product
+// card template and served by the frontend from /products/posters/.
 // ---------------------------------------------------------------------------
 const posterSeeds = [
-  { name: "Astroworld Ferris Wheel", theme: "Album Art" },
-  { name: "Graduation Bear", theme: "Album Art" },
-  { name: "Blonde Wash", theme: "Album Art" },
-  { name: "Neo-Tokyo Alley", theme: "Anime" },
-  { name: "Samurai at Dusk", theme: "Anime" },
-  { name: "Grain & Static", theme: "Abstract" },
-  { name: "Gradient Study No.3", theme: "Abstract" },
-  { name: "Stay Unbothered", theme: "Typography" },
-  { name: "Do It Anyway", theme: "Typography" },
-  { name: "Midnight Coupe", theme: "Retro" },
-  { name: "Sunset Palms 1987", theme: "Retro" },
-  { name: "Film Noir Frame", theme: "Film" },
+  { name: "To Pimp a Butterfly", artist: "Kendrick Lamar", genre: "Hip-Hop", file: "kendrick-lamar-to-pimp-a-butterfly" },
+  { name: "K-Dot", artist: "Kendrick Lamar", genre: "Hip-Hop", file: "kendrick-lamar-k-dot" },
+  { name: "Tupac", artist: "Tupac", genre: "Hip-Hop", file: "tupac" },
+  { name: "Timeless", artist: "The Weeknd", genre: "R&B", with: ["Playboi Carti"], file: "the-weeknd-and-playboi-carti-timeless" },
+  { name: "Operation: Doomsday", artist: "MF DOOM", genre: "Hip-Hop", file: "mf-doom-operation-doomsday" },
+  { name: "Rockstar", artist: "Anirudh Ravichander", genre: "Indian Cinema", file: "anirudh-rockstar" },
+  { name: "Blinding Lights", artist: "The Weeknd", genre: "R&B", file: "the-weeknd-blinding-lights" },
+  { name: "Love Sick", artist: "Don Toliver", genre: "R&B", file: "don-toliver-love-sick" },
+  { name: "Global Icon", artist: "A.R. Rahman", genre: "Indian Cinema", file: "a-r-rahman-global-icon" },
+  { name: "We Don't Trust You (White)", artist: "Future", genre: "Hip-Hop", with: ["Metro Boomin"], file: "future-and-metro-boomin-we-don-t-trust-you-white" },
+  { name: "The Ultimate Villain", artist: "MF DOOM", genre: "Hip-Hop", file: "mf-doom-the-ultimate-villain" },
+  { name: "ALL CAPS", artist: "MF DOOM", genre: "Hip-Hop", file: "mf-doom-all-caps" },
+  { name: "Weeknd", artist: "The Weeknd", genre: "R&B", file: "the-weeknd-weeknd" },
+  { name: "We Don't Trust You (Dark)", artist: "Future", genre: "Hip-Hop", with: ["Metro Boomin"], file: "future-and-metro-boomin-we-don-t-trust-you-dark" },
+  { name: "Musical", artist: "Anirudh Ravichander", genre: "Indian Cinema", file: "anirudh-musical" },
+  { name: "Hardstone Psycho", artist: "Don Toliver", genre: "R&B", file: "don-toliver-hardstone-psycho" },
+  { name: "In Future We Trust", artist: "Future", genre: "Hip-Hop", file: "future-in-future-we-trust" },
+  { name: "Heroes & Villains (If Young Metro Don't Trust You)", artist: "Metro Boomin", genre: "Hip-Hop", file: "metro-boomin-heroes-and-villains-if-young-metro-don-t-trust-you" },
+  { name: "Man on the Moon: The End of Day", artist: "Kid Cudi", genre: "Hip-Hop", file: "kid-cudi-man-on-the-moon-the-end-of-day" },
+  { name: "Die Lit", artist: "Playboi Carti", genre: "Hip-Hop", file: "playboi-carti-die-lit" },
+  { name: "South Atlanta Comics", artist: "Playboi Carti", genre: "Hip-Hop", file: "playboi-carti-south-atlanta-comics" },
+  { name: "Astroworld", artist: "Travis Scott", genre: "Hip-Hop", file: "travis-scott-astroworld" },
+  { name: "West", artist: "Kanye West", genre: "Hip-Hop", file: "kanye-west-west" },
+  { name: "The College Dropout (Through the Wire)", artist: "Kanye West", genre: "Hip-Hop", file: "kanye-west-the-college-dropout-through-the-wire" },
+  { name: "Rodeo", artist: "Travis Scott", genre: "Hip-Hop", file: "travis-scott-rodeo" },
+  { name: "Heroes & Villains (Comic)", artist: "Metro Boomin", genre: "Hip-Hop", file: "metro-boomin-heroes-and-villains-comic" },
+  { name: "Heroes & Villains (Spider-Verse)", artist: "Metro Boomin", genre: "Hip-Hop", file: "metro-boomin-heroes-and-villains-spider-verse" },
+  { name: "Metro Boomin", artist: "Metro Boomin", genre: "Hip-Hop", file: "metro-boomin-metro-boomin" },
+  { name: "channel ORANGE", artist: "Frank Ocean", genre: "R&B", file: "frank-ocean-channel-orange" },
+  { name: "I Am Music", artist: "Playboi Carti", genre: "Hip-Hop", file: "playboi-carti-i-am-music" },
+  { name: "SaNa", artist: "Santhosh Narayanan", genre: "Indian Cinema", file: "santhosh-narayanan-sana" },
+  { name: "Graduation", artist: "Kanye West", genre: "Hip-Hop", file: "kanye-west-graduation" },
+  { name: "Days Before Rodeo", artist: "Travis Scott", genre: "Hip-Hop", file: "travis-scott-days-before-rodeo" },
+  { name: "Utopia (Thank God)", artist: "Travis Scott", genre: "Hip-Hop", file: "travis-scott-utopia-thank-god" },
+  { name: "Mr. Morale & The Big Steppers", artist: "Kendrick Lamar", genre: "Hip-Hop", file: "kendrick-lamar-mr-morale-and-the-big-steppers" },
+  { name: "To Pimp a Butterfly (White House)", artist: "Kendrick Lamar", genre: "Hip-Hop", file: "kendrick-lamar-to-pimp-a-butterfly-white-house" },
+  { name: "Isai Puyal", artist: "A.R. Rahman", genre: "Indian Cinema", file: "a-r-rahman-isai-puyal" },
 ];
 
 const posters = posterSeeds.map((p, i) => ({
-  name: p.name,
+  name: p.name + " Poster",
   description:
-    p.name + " — a " + p.theme.toLowerCase() + " print for walls that need a " +
-    "focal point. Giclee-printed on heavyweight stock with a matte finish, " +
-    "shipped rolled in a rigid tube. Frame not included.",
+    p.name + " — a " + p.artist + " print for walls that need a focal point. " +
+    "Giclee-printed on heavyweight stock with a matte finish, shipped rolled in " +
+    "a rigid tube. Frame not included.",
   price: 249,
   countInStock: 40,
   sku: "PS-" + String(i + 1).padStart(3, "0"),
   category: "Posters",
-  brand: "Avani Studio",
+  brand: p.artist,
   sizes: ["A4", "A3", "A2"],
   colors: [],
-  collections: p.theme,
+  collections: p.genre,
   material: "Matte Paper",
-  tags: [p.theme, "wall art", "print"],
+  tags: [p.artist, p.name, p.genre, "wall art", "print"].concat(p.with || []),
   images: [
-    { url: "https://picsum.photos/600/850?random=" + (400 + i * 2), altText: p.name + " poster" },
-    { url: "https://picsum.photos/600/850?random=" + (401 + i * 2), altText: p.name + " detail" },
+    { url: "/products/posters/" + p.file + ".jpg", altText: p.name + " poster, framed" },
+    { url: "/products/posters/" + p.file + "-print.jpg", altText: p.name + " poster print" },
   ],
   rating: Number((4.4 + (i % 6) * 0.1).toFixed(1)),
   numReviews: 5 + (i % 17),

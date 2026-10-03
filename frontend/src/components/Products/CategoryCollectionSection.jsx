@@ -1,10 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-import perfumeImage from "../../assets/her.jpeg";
-import keychainImage from "../../assets/him.jpeg";
-import posterImage from "../../assets/featured.webp";
+import perfumeImage from "../../assets/perfumes.JPG";
+import keychainImage from "../../assets/keychains.JPG";
+import posterImage from "../../assets/posters.jpeg";
 
-// Placeholder art — swap these three imports for real category photography.
 const categories = [
   { label: "Perfumes", query: "Perfumes", image: perfumeImage },
   { label: "NFC Keychains", query: "NFC Keychains", image: keychainImage },
