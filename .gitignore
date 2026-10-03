@@ -1,0 +1,6 @@
+# Design source material, not used by the app
+frontend/src/assets/covers/
+frontend/src/assets/posters/
+frontend/src/assets/perfume-html/
+*.zip
+*(standalone).html
